@@ -1,0 +1,10 @@
+cyber pannel :
+	 Visit: <https://163.44.193.200:8090>
+	Panel username: admin
+	Panel password: okoZ8bnyREiynC28
+
+cmd :
+ssh kinhd2534@163.44.193.200
+12345678
+
+
