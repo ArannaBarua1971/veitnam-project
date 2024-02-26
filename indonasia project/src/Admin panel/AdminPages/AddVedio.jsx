@@ -182,13 +182,13 @@ function AddVedio() {
               setContent={setVideoDescription}
             />
           </div>
-          <Button className="py-3 px-2">
+          <Button className="py-3 px-2" onClick={edit ? editContent : handleSubmission}>
             {videoUploadLoader ? (
               <div class="spinner-border mx-2 " role="status"></div>
             ) : (
-              <a onClick={edit ? editContent : handleSubmission}>
+              <>
                 {edit ? "Edit Course Video " : "Add Course Video"}
-              </a>
+              </>
             )}
           </Button>
         </div>

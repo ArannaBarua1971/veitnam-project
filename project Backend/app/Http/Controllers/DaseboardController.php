@@ -22,7 +22,9 @@ use Illuminate\Support\Carbon;
 use App\Models\MemberShipVedio;
 use App\Models\MembershipsMonth;
 use App\Models\Muabánròngtheomã;
+use App\Models\TotalData;
 use Illuminate\Support\Facades\Storage;
+use SebastianBergmann\CodeCoverage\Report\Xml\Totals;
 
 class DaseboardController extends Controller
 {
@@ -464,7 +466,7 @@ class DaseboardController extends Controller
             "data" => []
         ], 200);
     }
-    
+
     // get specific short long asset
     public function get_specific_short_deal($id)
     {
@@ -485,7 +487,7 @@ class DaseboardController extends Controller
             "data" => $longDeal
         ], 200);
     }
-    
+
     // edit specific short long asset
     public function edit_specific_short_deal(Request $req, $id)
     {
@@ -588,16 +590,16 @@ class DaseboardController extends Controller
     {
         $req->validate([
             "title" => "required",
-            "video" => "required|max:256000",
+            "video" => "required|max:500000",
             "video_thumb" => "required|mimes:jpeg,png,jpg",
-            "course_id"=>"required"
+            "course_id" => "required"
         ], [
-            "video.max" => 'The video must be less than 256 MB'
+            "video.max" => 'The video must be less than 500 MB'
         ]);
 
         $newVideo = new CousesVideo();
         $newVideo->title = $req->title;
-        $newVideo->course_id=$req->course_id;
+        $newVideo->course_id = $req->course_id;
 
         // Generate slug
         $slug = Str::slug($req->title);
@@ -696,7 +698,7 @@ class DaseboardController extends Controller
     {
         $req->validate([
             "course_title" => "required",
-            "price"=>"required"
+            "price" => "required"
         ]);
 
         $course = Course::where('slug', $slug)->first();
@@ -822,6 +824,40 @@ class DaseboardController extends Controller
         ], 200);
     }
     // upload data
+    public function upload_totalData(Request $req)
+    {
+        $req->validate([
+            'csv_file' => 'required|file|mimes:csv',
+        ]);
+
+        $data = array_map("str_getcsv", file($req->file('csv_file')));
+        $Cá_nhân_trong_nước = 0;
+        $Tổ_chức_trong_nước = 0;
+        $Tự_doanh = 0;
+        $Nước_ngoài = 0;
+
+        foreach ($data as $key => $row) {
+            if ($key == count($data) - 1) {
+                $Cá_nhân_trong_nước = $row[1];
+                $Tổ_chức_trong_nước = $row[2];
+                $Tự_doanh = $row[3];
+                $Nước_ngoài = $row[4];
+            }
+        }
+        $newTotal = new TotalData();
+        $newTotal->Cá_nhân_trong_nước = $Cá_nhân_trong_nước;
+        $newTotal->Tổ_chức_trong_nước = $Tổ_chức_trong_nước;
+        $newTotal->Tự_doanh = $Tự_doanh;
+        $newTotal->Nước_ngoài = $Nước_ngoài;
+        $newTotal->save();
+
+
+        return response()->json([
+            'message' => 'file uploaded',
+            "status" => "success",
+            "data" => $data
+        ], 200);
+    }
     public function upload_Data(Request $req)
     {
         $req->validate([
@@ -830,15 +866,16 @@ class DaseboardController extends Controller
 
         $data = array_map("str_getcsv", file($req->file('csv_file')));
 
+
         foreach ($data as $key => $row) {
             if ($key != 0) {
-                $newData = new Data();
-                $newData->Phânngành_ICB2 = $row[0];
-                $newData->Cá_nhân_trong_nước = $row[1];
-                $newData->Tổ_chức_trong_nước = $row[2];
-                $newData->Tự_doanh = $row[3];
-                $newData->Nước_ngoài = $row[4];
-                $newData->save();
+                Data::create([
+                    "Phânngành_ICB2" => $row[0],
+                    "Cá_nhân_trong_nước" => $row[1],
+                    "Tổ_chức_trong_nước" => $row[2],
+                    "Tự_doanh" => $row[3],
+                    "Nước_ngoài" => $row[4],
+                ]);
             }
         }
 
@@ -846,7 +883,7 @@ class DaseboardController extends Controller
         return response()->json([
             'message' => 'file uploaded',
             "status" => "success",
-            "data" => []
+            "data" => $data
         ], 200);
     }
     public function upload_Muabánròngtheomã_data(Request $req)
@@ -860,6 +897,7 @@ class DaseboardController extends Controller
         foreach ($data as $key => $row) {
             if ($key != 0) {
                 $newData = new Muabánròngtheomã();
+                $newData->data_id = $req->data_id;
                 $newData->Mã = $row[0];
                 $newData->Cá_nhân_trong_nước = $row[1];
                 $newData->Tổ_chức_trong_nước = $row[2];
@@ -876,41 +914,15 @@ class DaseboardController extends Controller
             "data" => []
         ], 200);
     }
-    public function upload_Diễnbiếnmua_bán_data(Request $req)
-    {
-        $req->validate([
-            'csv_file' => 'required|file|mimes:csv',
-        ]);
 
-        $data = array_map("str_getcsv", file($req->file('csv_file')));
-
-        foreach ($data as $key => $row) {
-            if ($key != 0) {
-                $newData = new DiễnBiếnMuabán();
-                $newData->Cá_nhân_trong_nước = $row[0];
-                $newData->Tổ_chức_trong_nước = $row[1];
-                $newData->Tự_doanh = $row[2];
-                $newData->Nước_ngoài = $row[3];
-                $newData->save();
-            }
-        }
-
-
-        return response()->json([
-            'message' => 'file uploaded',
-            "status" => "success",
-            "data" => []
-        ], 200);
-    }
     public function get_Data()
     {
-        $data = Data::get();
-
+        $getData = Data::get();
 
         return response()->json([
             'message' => 'file uploaded',
             "status" => "success",
-            "data" => $data
+            "data" => $getData
         ], 200);
     }
     public function get_Muabánròngtheomã_data()
@@ -924,18 +936,6 @@ class DaseboardController extends Controller
             "data" => $data
         ], 200);
     }
-    public function get_Diễnbiếnmua_bán_data()
-    {
-        $data = DiễnBiếnMuabán::orderBy('created_at', 'desc')->take(3)->get();;
-
-
-        return response()->json([
-            'message' => 'file uploaded',
-            "status" => "success",
-            "data" => $data
-        ], 200);
-    }
-
     // add course and get course
     public function add_course(Request $req)
     {
@@ -973,7 +973,7 @@ class DaseboardController extends Controller
     }
     public function getAll_course()
     {
-        $allcourses=Course::get();
+        $allcourses = Course::get();
         return response()->json([
             'message' => 'course added',
             "status" => "success",
@@ -983,17 +983,19 @@ class DaseboardController extends Controller
 
 
     // all course user activity
-    public function all_CourseUser(){
-        $allcoursesUser=CheckoutForCourse::get();
+    public function all_CourseUser()
+    {
+        $allcoursesUser = CheckoutForCourse::get();
         return response()->json([
             'message' => 'all course user',
             "status" => "success",
             "data" => $allcoursesUser
         ], 200);
     }
-    public function active_course_user_status(Request $req){
-        $coursesUser=CheckoutForCourse::where("id",$req->id)->first();
-        $coursesUser->status=!$coursesUser->status;
+    public function active_course_user_status(Request $req)
+    {
+        $coursesUser = CheckoutForCourse::where("id", $req->id)->first();
+        $coursesUser->status = !$coursesUser->status;
         $coursesUser->save();
         return response()->json([
             'message' => 'course user status updated',
@@ -1001,13 +1003,45 @@ class DaseboardController extends Controller
             "data" => []
         ], 200);
     }
-    public function delete_course_user(Request $req){
-        $coursesUser=CheckoutForCourse::where("id",$req->id)->first();
+    public function delete_course_user(Request $req)
+    {
+        $coursesUser = CheckoutForCourse::where("id", $req->id)->first();
         $coursesUser->delete();
         return response()->json([
             'message' => 'course user detail deleted',
             "status" => "success",
             "data" => []
+        ], 200);
+    }
+    public function get_data_byDate()
+    {
+        $data = Data::select('created_at')->distinct()->get();
+        return response()->json([
+            'message' => 'all data',
+            "status" => "success",
+            "data" => $data
+        ], 200);
+    }
+    public function delete_data_byDate($date)
+    {
+        // Convert $date to an array if it's not already
+        if (!is_array($date)) {
+            $date = [$date];
+        }
+
+        // Delete records from Data table
+        Data::whereIn('created_at', $date)->delete();
+
+        // Delete records from Muabánròngtheomã table
+        Muabánròngtheomã::whereIn('created_at', $date)->delete();
+
+        // Delete records from TotalData table
+        TotalData::whereIn('created_at', $date)->delete();
+
+        return response()->json([
+            'message' => 'Data deleted',
+            'status' => 'success',
+            'date' => $date
         ], 200);
     }
 }

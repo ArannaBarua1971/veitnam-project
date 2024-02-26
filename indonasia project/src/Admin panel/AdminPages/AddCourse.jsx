@@ -114,10 +114,8 @@ function AddCourse() {
           />
         </div>
 
-        <Button className="py-3 px-2">
-          <a onClick={edit ? editContent : handleSubmission}>
+        <Button className="py-3 px-2" onClick={edit ? editContent : handleSubmission}>
             {edit ? "Edit Course " : "Add Course"}
-          </a>
         </Button>
       </section>
     </div>

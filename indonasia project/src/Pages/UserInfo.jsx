@@ -121,32 +121,34 @@ function UserInfo() {
 
   // updated password
   const update_password = () => {
-    try {
-      const user = JSON.parse(localStorage.getItem("userInfo"));
-      const id = user.id;
+    if (!loginWithThirdparty) {
+      try {
+        const user = JSON.parse(localStorage.getItem("userInfo"));
+        const id = user.id;
 
-      const request = {
-        id,
-        password,
-        password_confirmation,
-      };
-      axios
-        .post(`${conf}/update_password`, request)
-        .then((response) => {
-          notify("password is updated");
-          setValidationError({});
-        })
-        .catch((error) => {
-          if (error.response.status == 401) {
-            error = error.response.data.message;
-            setValidationError({ old_password: error });
-          } else {
-            error = error.response.data.errors;
-            setValidationError({ ...error });
-          }
-        });
-    } catch {
-      navigate("/");
+        const request = {
+          id,
+          password,
+          password_confirmation,
+        };
+        axios
+          .post(`${conf}/update_password`, request)
+          .then((response) => {
+            notify("password is updated");
+            setValidationError({});
+          })
+          .catch((error) => {
+            if (error.response.status == 401) {
+              error = error.response.data.message;
+              setValidationError({ old_password: error });
+            } else {
+              error = error.response.data.errors;
+              setValidationError({ ...error });
+            }
+          });
+      } catch {
+        navigate("/");
+      }
     }
   };
 
@@ -195,22 +197,22 @@ function UserInfo() {
               >
                 Update Profile
               </button>
-              {!admin ? (
-                <button
-                  className="nav-link"
-                  id="nav-home-tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#history"
-                  type="button"
-                  role="tab"
-                  aria-controls="nav-home"
-                  aria-selected="true"
-                >
-                  Subscription
-                </button>
-              ) : (
+              {/* {!admin ? ( */}
+              <button
+                className="nav-link"
+                id="nav-home-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#history"
+                type="button"
+                role="tab"
+                aria-controls="nav-home"
+                aria-selected="true"
+              >
+                Subscription
+              </button>
+              {/* ) : (
                 <></>
-              )}
+              )} */}
               {!loginWithThirdparty ? (
                 <button
                   className="nav-link"
@@ -252,9 +254,10 @@ function UserInfo() {
                           labelStyle="text-light"
                           name="email"
                           type="email"
-                          className="form-control email-field place-bg text-white"
+                          className="form-control email-field place-bg text-white "
                           id="inputEmail4"
                           value={email}
+                          disabled={loginWithThirdparty ? true : false}
                           onChange={(e) => setEmail(e.target.value)}
                         />
                         {validationError.email && (
@@ -387,109 +390,107 @@ function UserInfo() {
               role="tabpanel"
               aria-labelledby="nav-home-tab"
             >
-              {!admin ? (
-                <div className="userInformation">
-                  <div
-                    className="accordion overflow-auto"
-                    id="accordionExample"
-                  >
-                    {allMemberShip.length != 0 ? (
-                      <>
-                        {allMemberShip.map((membership, index) => (
-                          <div key={index} className="accordion-item">
-                            <h2 className="accordion-header">
-                              <button
-                                className="accordion-button"
-                                type="button"
-                                data-bs-toggle="collapse"
-                                data-bs-target={`#${membership.id}`}
-                                aria-expanded={
-                                  showAccordian == membership.id ? true : false
-                                }
-                                aria-controls={`${membership.id}`}
-                                onClick={() =>
-                                  setShowAccordian((pre) =>
-                                    pre == membership.id ? -1 : membership.id
-                                  )
-                                }
-                              >
-                                <div className="title">
-                                  {membership.membership.title}
-                                </div>
-                                <div className="date mx-5">
-                                  <span>Đang thực hiện: </span>
-                                  {format(
-                                    addDays(
-                                      new Date(membership.created_at),
-                                      membership.duration * 30
-                                    ),
-                                    "dd M yyyy"
-                                  )}
-                                </div>
-                                <div className="expired mx-5">
-                                  {membership.active_membership_status ? (
-                                    <Button
-                                      textStyle="p-0 m-0"
-                                      className="p-1  mx-5"
-                                    >
-                                      Hết hạn
-                                    </Button>
-                                  ) : (
-                                    <Button
-                                      textStyle="p-0 m-0  text-white"
-                                      className="p-1  m-0 bg-danger mx-5"
-                                    >
-                                      Hết hạn
-                                    </Button>
-                                  )}
-                                </div>
-                                <Button
-                                  className="btn"
-                                  textStyle="p-0 m-0"
-                                  type="button"
-                                >
-                                  Action
-                                </Button>
-                                <div className="up_down ">
-                                  {showAccordian == membership.id ? (
-                                    <i class="fas fa-chevron-up"></i>
-                                  ) : (
-                                    <i class="fas fa-chevron-down"></i>
-                                  )}
-                                </div>
-                              </button>
-                            </h2>
-                            <div
-                              id={`${membership.id}`}
-                              className={`accordion-collapse collapse ${
-                                showAccordian == membership.id ? "show" : ""
-                              }`}
-                              data-bs-parent="#accordionExample"
+              {/* {!admin ? ( */}
+              <div className="userInformation">
+                <div className="accordion overflow-auto" id="accordionExample">
+                  {allMemberShip.length != 0 ? (
+                    <>
+                      {allMemberShip.map((membership, index) => (
+                        <div key={index} className="accordion-item">
+                          <h2 className="accordion-header">
+                            <button
+                              className="accordion-button"
+                              type="button"
+                              data-bs-toggle="collapse"
+                              data-bs-target={`#${membership.id}`}
+                              aria-expanded={
+                                showAccordian == membership.id ? true : false
+                              }
+                              aria-controls={`${membership.id}`}
+                              onClick={() =>
+                                setShowAccordian((pre) =>
+                                  pre == membership.id ? -1 : membership.id
+                                )
+                              }
                             >
-                              <div className="accordion-body d-flex ">
-                                <div className="title text-white">
-                                  {membership.membership.title}
-                                </div>
-                                <div className="date mx-5 text-white">
-                                  <span>Đang thực hiện: </span>
-                                  {format(
-                                    addDays(new Date(membership.created_at), 0),
-                                    "dd M yyyy"
-                                  )}
-                                </div>
+                              <div className="title col-lg-2">
+                                {membership.membership.title}
+                              </div>
+                              <div className="date mx-5">
+                                <span>Đang thực hiện: </span>
+                                {format(
+                                  addDays(
+                                    new Date(membership.created_at),
+                                    membership.duration * 30
+                                  ),
+                                  "dd M yyyy"
+                                )}
+                              </div>
+                              <div className="expired mx-5">
+                                {membership.active_membership_status ? (
+                                  <Button
+                                    textStyle="p-0 m-0"
+                                    className="p-1  mx-5"
+                                  >
+                                    Hết hạn
+                                  </Button>
+                                ) : (
+                                  <Button
+                                    textStyle="p-0 m-0  text-white"
+                                    className="p-1  m-0 bg-danger mx-5"
+                                  >
+                                    Hết hạn
+                                  </Button>
+                                )}
+                              </div>
+                              <Button
+                                className="btn"
+                                textStyle="p-0 m-0"
+                                type="button"
+                              >
+                                Action
+                              </Button>
+                              <div className="up_down ">
+                                {showAccordian == membership.id ? (
+                                  <i class="fas fa-chevron-up"></i>
+                                ) : (
+                                  <i class="fas fa-chevron-down"></i>
+                                )}
+                              </div>
+                            </button>
+                          </h2>
+                          <div
+                            id={`${membership.id}`}
+                            className={`accordion-collapse collapse ${
+                              showAccordian == membership.id ? "show" : ""
+                            }`}
+                            data-bs-parent="#accordionExample"
+                          >
+                            <div className="accordion-body d-flex ">
+                              <div className="title text-white col-lg-2">
+                                {membership.membership.title}
+                              </div>
+
+                              <div className="date mx-5 text-white">
+                                <span>Đang thực hiện: </span>
+                                {format(
+                                  addDays(new Date(membership.created_at), 0),
+                                  "dd M yyyy"
+                                )}
                               </div>
                             </div>
                           </div>
-                        ))}
-                      </>
-                    ) : (
-                      <></>
-                    )}
-                  </div>
+                        </div>
+                      ))}
+                    </>
+                  ) : (
+                    <></>
+                  )}
                 </div>
-              ) : (
+              </div>
+              {/* ) : (
                 <></>
-              )}
+              )} */}
             </div>
 
             {!loginWithThirdparty ? (

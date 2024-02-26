@@ -79,7 +79,7 @@ function Tổngquan() {
   return (
     <section
       id="Tổngquan"
-      className="pt-5 d-flex main_background overflow position-relative flex-wrap"
+      className="p-5 d-flex main_background  position-relative   "
     >
       {/* alert section */}
       {/* <div class="alert alert-success alert-dismissible fade show position-absolute z-1 top-0 w-100" style={{ height:"60px"}} role="alert">

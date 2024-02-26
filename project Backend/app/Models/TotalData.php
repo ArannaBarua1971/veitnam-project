@@ -5,11 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Muabánròngtheomã extends Model
+class TotalData extends Model
 {
     use HasFactory;
-
-    public function datas(){
-        return $this->belongsTo(Data::class);
-    }
+   
 }

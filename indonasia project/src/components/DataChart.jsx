@@ -24,7 +24,7 @@ function DataChart({chart_Data}) {
     Legend,
     Tooltip
   );
-  const chartData = chart_Data.length ? chart_Data :[
+  const chartData = chart_Data ? chart_Data :[
     
       {
           "id": 36,

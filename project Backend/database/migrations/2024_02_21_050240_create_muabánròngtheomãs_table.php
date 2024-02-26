@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('muabánròngtheomãs', function (Blueprint $table) {
             $table->id();
             $table->longText("Mã")->nullable();
-            $table->float("Cá_nhân_trong_nước")->nullable();
-            $table->float("Tổ_chức_trong_nước")->nullable();
-            $table->float("Tự_doanh")->nullable();
-            $table->float("Nước_ngoài")->nullable();
+            $table->foreignId("data_id")->constrained()->onUpdate("cascade")->onDelete("cascade");
+            $table->float("Cá_nhân_trong_nước")->default(0);
+            $table->float("Tổ_chức_trong_nước")->default(0);
+            $table->float("Tự_doanh")->default(0);
+            $table->float("Nước_ngoài")->default(0);
             $table->timestamps();
         });
     }

@@ -59,7 +59,7 @@ function AllCourses() {
   return (
     <div>
       {/* Go to IDP section */}
-      <section id="IDP">
+      <section id="IDP" className="p-5 d-flex main_background  position-relative bg-white">
         <MainContainer className="mx-auto  col-xl-9 col-sm-11 my-3">
           <div className="d-flex flex-wrap justify-content-between align-items-center mt-3">
             <ContentHeader className=" mx-2">All Courses</ContentHeader>

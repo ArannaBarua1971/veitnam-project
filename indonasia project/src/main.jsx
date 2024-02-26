@@ -41,6 +41,7 @@ import CourseDetails from "./Pages/CourseDetails.jsx";
 import AllActiveCourses from "./Pages/AllActiveCourses.jsx";
 import AllCourses from "./Admin panel/AdminPages/AllCourses.jsx";
 import AllCourseBuyerUser from "./Admin panel/AdminPages/AllCourseBuyerUser.jsx";
+import AllData from "./Admin panel/AdminPages/AllData.jsx";
 
 const router = createBrowserRouter([
   {
@@ -145,6 +146,7 @@ const router = createBrowserRouter([
       { path: "/admin/all-vedio", element: <AllVideo /> },
       { path: "/admin/Add-course/:slug?", element: <AddCourse /> },
       { path: "/admin/all-course", element: <AllCourses /> },
+      { path: "/admin/all-data", element: <AllData /> },
     ],
   },
 ]);

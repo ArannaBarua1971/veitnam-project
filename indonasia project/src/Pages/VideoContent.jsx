@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import conf from "../conf/conf";
 import { Button, Card, ContentHeader } from "../components";
+import { Doughnut } from "react-chartjs-2";
 
 function VideoContent() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [videos, setVideos] = useState([]);
   const [curentVideo, setCurrentVideo] = useState([]);
+  const [play, setPlay] = useState(false);
+  const videoRef=useRef();
 
   const getVideoData = () => {
     axios
@@ -19,16 +22,30 @@ function VideoContent() {
       })
       .catch((error) => console.log(error));
   };
+
+  const playVideo=()=>{
+    if(play){
+      videoRef.current.pause()
+    }
+    else{
+      videoRef.current.play()
+    }
+    setPlay(pre => !pre)
+
+  }
   useEffect(() => {
     getVideoData();
   }, [id]);
+  useEffect(() => {
+    setPlay(false);
+  }, [curentVideo]);
   return (
     <div>
       <div className="container videoSection">
         <section className="hero--area section-padding-80 video-main-section-edit">
           <div className="container">
             <Button
-              onClick={() => navigate("/Khóa_đào_tạo_hội_viên")}
+              onClick={() => window.history.back()}
               className="d-block btn-style mb-3 "
               width="10%"
             >
@@ -36,39 +53,75 @@ function VideoContent() {
             </Button>
             <div className="row no-gutters">
               {/* header */}
-              <ContentHeader>{curentVideo? curentVideo.title:""}</ContentHeader>
+              {/* <ContentHeader>
+                {curentVideo ? curentVideo.title : ""}
+              </ContentHeader> */}
 
               {/* back to history */}
-              <div className="col-12 col-md-7 col-lg-8">
-                <div class="tab-content">
+              <div className="col-12 col-md-7 col-lg-8 pe-0">
+                <div className="tab-content">
                   <div
-                    class="tab-pane fade show active"
+                    className="tab-pane fade show active"
                     id="post-1"
                     role="tabpanel"
                     aria-labelledby="post-1-tab"
                   >
                     {/* <!-- Single Feature Post --> */}
-                    <div class="single-feature-post video-post bg-img">
+                    <div className="single-feature-post video-post bg-img">
+                      {/* <!-- Play Button --> */}
+                        <a
+                          className={`btn cursor-pointer ${
+                            !play ? "play-btn" : "pause-btn"
+                          }`}
+                          onClick={playVideo}
+                          >
+                          {!play ? (
+                          <i className="fa fa-play" aria-hidden="true"></i>
+                          ) : (
+                            <>
+                            <i className="fa fa-pause" aria-hidden="true"></i>
+                            </>
+                          )}
+                        </a>
+
+                      {/* video section */}
                       <video
-                        src={curentVideo? curentVideo.video_url:""}
+                        src={curentVideo ? curentVideo.video_url : ""}
                         width="100%"
                         height="100%"
-                        controls
+                        controls={play}
+                        ref={videoRef}
+                        controlslist="fullscreen nodownload remoteplayback playbackrate foobar"
                       ></video>
-                    </div>
 
+                      {!play ? (
+                        <>
+                          {/* <!-- Post Content --> */}
+                          <div className="post-content">
+                            {/* <a href="#" className="post-cata">
+                          Sports
+                        </a> */}
+                            <a href="single-post.html" className="post-title">
+                              {curentVideo ? curentVideo.title : ""}
+                            </a>
+                          </div>
+                        </>
+                      ) : (
+                        <></>
+                      )}
+                    </div>
                     <div
                       className="first-pera d-block"
                       dangerouslySetInnerHTML={{
-                        __html:curentVideo? curentVideo.description:"",
+                        __html: curentVideo ? curentVideo.description : "",
                       }}
                     />
                   </div>
                 </div>
               </div>
 
-              <div className="col-12 col-md-5 col-lg-4">
-                <ul className="nav vizew-nav-tab" role="tablist">
+              <div className="ps-1 col-12 col-md-5 col-lg-4">
+                <ul className={`nav vizew-nav-tab ${videos.length <5 ? "d-flex flex-column":""}`} role="tablist">
                   {videos.map((video, index) => (
                     <li
                       key={index}
@@ -77,12 +130,12 @@ function VideoContent() {
                     >
                       <a
                         className={`nav-link ${
-                          video.id == curentVideo.id ? "active" : ""
+                          video.id == curentVideo.id ? "active bg-primary" : ""
                         } `}
-                        id="post-1-tab"
+                        id={`post-${index}-tab`}
                         data-toggle="pill"
                         role="tab"
-                        aria-controls="post-1"
+                        aria-controls={`post-${index}`}
                         aria-selected="true"
                       >
                         {/* <!-- Single Blog Post --> */}

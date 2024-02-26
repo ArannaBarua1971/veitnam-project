@@ -69,6 +69,16 @@ Route::controller(UserController::class)->name("user")->group(function () {
     Route::get("/get_ActiveCourse_video/{id}","get_ActiveCourse_video")->name(".get_ActiveCourse_video");
     Route::post("/addCheckoutForCourse","addCheckoutForCourse")->name(".addCheckoutForCourse");
     Route::get("/courseBuyVerify/{id}/{course_id}","courseBuyVerify")->name(".courseBuyVerify");
+
+    // according to date  to get data   
+    Route::get("/data_fromStart/{date}","data_fromStart")->name(".data_fromStart");
+    Route::get("/data_fromEnd/{date}","data_fromEnd")->name(".data_fromEnd");
+    Route::get("/data_fromBoth/{start_date}/{end_date}","data_fromBoth")->name(".data_fromBoth");
+    Route::get("/get_Muabánròngtheomã_dataById/{id}","get_Muabánròngtheomã_dataById")->name(".get_Muabánròngtheomã_dataById");
+    Route::get("/get_dataById/{id}","get_dataById")->name(".get_dataById");
+    Route::get("/get_total_data","get_total_data")->name(".get_total_data");
+    Route::get("/getDataBycatagroy/{catagory}","getDataBycatagroy")->name(".getDataBycatagroy");
+    Route::get("/getStock","getStock")->name(".getStock");
 });
 
 // daseboard related Route
@@ -139,10 +149,9 @@ Route::controller(DaseboardController::class)->name("daseboard")->group(function
     // upload Data
     Route::post('/upload_Data', 'upload_Data')->name(".upload_Data");
     Route::get('/get_Data', 'get_Data')->name(".get_Data");
+    Route::post("/upload_totalData","upload_totalData")->name(".upload_totalData");
     Route::post('/upload_Muabánròngtheomã_data', 'upload_Muabánròngtheomã_data')->name(".upload_Muabánròngtheomã_data");
     Route::get('/get_Muabánròngtheomã_data', 'get_Muabánròngtheomã_data')->name(".get_Muabánròngtheomã_data");
-    Route::post('/upload_Diễnbiếnmua_bán_data', 'upload_Diễnbiếnmua_bán_data')->name(".upload_Diễnbiếnmua_bán_data");
-    Route::get('/get_Diễnbiếnmua_bán_data', 'get_Diễnbiếnmua_bán_data')->name(".get_Diễnbiếnmua_bán_data");
 
     // add course and get all Course
     Route::post("/add_course","add_course")->name(".add_course");
@@ -156,5 +165,7 @@ Route::controller(DaseboardController::class)->name("daseboard")->group(function
     Route::get("/all_CourseUser","all_CourseUser")->name(".all_CourseUser");
     Route::post("/delete_course_user","delete_course_user")->name(".delete_course_user");
     Route::post("/active_course_user_status","active_course_user_status")->name(".active_course_user_status");
+    Route::get("/get_data_byDate","get_data_byDate")->name(".get_data_byDate");
+    Route::post("/delete_data_byDate/{date}","delete_data_byDate")->name(".delete_data_byDate");
 
 });

@@ -7,14 +7,19 @@ use App\Models\CheckoutDetail;
 use App\Models\CheckoutForCourse;
 use App\Models\Course;
 use App\Models\CousesVideo;
+use App\Models\Data;
+use App\Models\DiễnBiếnMuabán;
 use App\Models\LongDeal;
 use App\Models\Membership;
 use App\Models\MemberShipVedio;
+use App\Models\Muabánròngtheomã;
 use App\Models\ShortDeal;
+use App\Models\TotalData;
 use Exception;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -124,7 +129,7 @@ class UserController extends Controller
         $req->validate([
             "email" => "required|email",
             "name" => "required",
-            "phone"=>"min:10|max:10"
+            "phone" => "min:10|max:10"
         ]);
 
 
@@ -163,7 +168,7 @@ class UserController extends Controller
         ]);
         $user = User::where("id", $req->id)->first();
 
-        $user->password=Hash::make($req->password);
+        $user->password = Hash::make($req->password);
         $user->save();
         return response()->json([
             "message" => "password changed",
@@ -199,7 +204,7 @@ class UserController extends Controller
 
             $newUser->save();
             $user = User::select("id", "name", "email")->where('email', $req->email)->first();
-            
+
             return response()->json([
                 "message" => "authorize",
                 "status" => 'success',
@@ -209,8 +214,9 @@ class UserController extends Controller
     }
 
     // get active membership
-    public function get_active_membership(){
-        $activeMemberships = Membership::with('membershipsmonth')->select('id', 'title', 'catagory', 'slug')->where('active_membership_status',true)->get();
+    public function get_active_membership()
+    {
+        $activeMemberships = Membership::with('membershipsmonth')->select('id', 'title', 'catagory', 'slug')->where('active_membership_status', true)->get();
 
         return response()->json([
             "message" => "all memberships",
@@ -220,27 +226,29 @@ class UserController extends Controller
     }
 
     // verfiy membership user
-    public function verifyMemberShipUser($email){
-        $verify=CheckoutDetail::select('id','active_membership_status')->where('email',$email)->first();
+    public function verifyMemberShipUser($email)
+    {
+        $verify = CheckoutDetail::select('id', 'active_membership_status')->where('email', $email)->first();
 
         return response()->json([
             "message" => "verify memberShip",
             "status" => "success",
             "data" => $verify
         ], 200);
-
     }
     // get_allActive_video
-    public function get_allActive_video()  {
-        $allActiveVideo =CousesVideo::select('id','title','video_thumb_url','slug','status','description')->where('status',true)->get();
+    public function get_allActive_video()
+    {
+        $allActiveVideo = CousesVideo::select('id', 'title', 'video_thumb_url', 'slug', 'status', 'description')->where('status', true)->get();
         return response()->json([
             "message" => "verify memberShip",
             "status" => "success",
             "data" => $allActiveVideo
         ], 200);
     }
-    public function get_sepecific_video($slug)  {
-        $allActiveVideo =CousesVideo::select('id','course_id','title','video_thumb','video_thumb_url','video','video_url','slug','description')->where('slug',$slug)->first();
+    public function get_sepecific_video($slug)
+    {
+        $allActiveVideo = CousesVideo::select('id', 'course_id', 'title', 'video_thumb', 'video_thumb_url', 'video', 'video_url', 'slug', 'description')->where('slug', $slug)->first();
         return response()->json([
             "message" => "verify memberShip",
             "status" => "success",
@@ -250,24 +258,27 @@ class UserController extends Controller
 
     // getAll active short and long  and asset deal
 
-    public function get_allActive_shortDeal(){
-        $allActive=ShortDeal::where('status',true)->get();
+    public function get_allActive_shortDeal()
+    {
+        $allActive = ShortDeal::where('status', true)->get();
         return response()->json([
             "message" => "verify memberShip",
             "status" => "success",
             "data" => $allActive
         ], 200);
     }
-    public function get_allActive_longDeal(){
-        $allActive=LongDeal::where('status',true)->get();
+    public function get_allActive_longDeal()
+    {
+        $allActive = LongDeal::where('status', true)->get();
         return response()->json([
             "message" => "verify memberShip",
             "status" => "success",
             "data" => $allActive
         ], 200);
     }
-    public function get_allActive_asset(){
-        $allActive=Asset::where('status',true)->get();
+    public function get_allActive_asset()
+    {
+        $allActive = Asset::where('status', true)->get();
         return response()->json([
             "message" => "verify memberShip",
             "status" => "success",
@@ -276,27 +287,29 @@ class UserController extends Controller
     }
 
     // get All memberShip
-    public function getAllMembership($email){
-        $allMembership=CheckoutDetail::with('membership')->where('email',$email)->get();
+    public function getAllMembership($email)
+    {
+        $allMembership = CheckoutDetail::with('membership')->where('email', $email)->get();
         return response()->json([
             "message" => "all memberShip",
             "status" => "success",
             "data" => $allMembership
         ], 200);
-
     }
 
     // get all active courses
-    public function getAllActiveCourse(){
-        $allActiveCourses=Course::where("status",true)->get();
+    public function getAllActiveCourse()
+    {
+        $allActiveCourses = Course::where("status", true)->get();
         return response()->json([
             "message" => "all Course",
             "status" => "success",
             "data" => $allActiveCourses
         ], 200);
     }
-    public function getSpecificCourseDetails($slug){
-        $course=Course::where("slug",$slug)->first();
+    public function getSpecificCourseDetails($slug)
+    {
+        $course = Course::where("slug", $slug)->first();
         return response()->json([
             "message" => "Course",
             "status" => "success",
@@ -305,8 +318,9 @@ class UserController extends Controller
     }
 
     // get active course video
-    public function get_ActiveCourse_video($id){
-        $courseVideos=CousesVideo::where([["course_id",$id],['status',true]])->get();
+    public function get_ActiveCourse_video($id)
+    {
+        $courseVideos = CousesVideo::where([["course_id", $id], ['status', true]])->get();
         return response()->json([
             "message" => "Course",
             "status" => "success",
@@ -315,7 +329,8 @@ class UserController extends Controller
     }
 
     // add checkout details for course
-    public function addCheckoutForCourse(Request $req){
+    public function addCheckoutForCourse(Request $req)
+    {
 
 
         $req->validate([
@@ -346,22 +361,131 @@ class UserController extends Controller
 
     // courseBuyVerify
 
-    public function courseBuyVerify($id,$course_id){
-        $course_active=CheckoutForCourse::where([["user_id",$id],["course_id",$course_id],["status",true]])->first();
+    public function courseBuyVerify($id, $course_id)
+    {
+        $course_active = CheckoutForCourse::where([["user_id", $id], ["course_id", $course_id], ["status", true]])->first();
 
-        if($course_active){
+        if ($course_active) {
             return response()->json([
                 "message" => "course buyed",
                 "status" => "success",
                 "data" => true
             ], 200);
-        }
-        else{
+        } else {
             return response()->json([
                 "message" => "course not buyed",
                 "status" => "success",
                 "data" => false
             ], 200);
         }
+    }
+
+    public function data_fromStart($date)
+    {
+        $Data1 = Data::where('created_at', '>=', $date)->get();
+        $Data2 = Muabánròngtheomã::where('created_at', '>=', $date)->get();
+
+        $getData = [
+            $Data1, $Data2
+        ];
+        return response()->json([
+            "message" => "data ",
+            "status" => "success",
+            "data" => $getData
+        ], 200);
+    }
+    public function data_fromEnd($date)
+    {
+        $Data1 = Data::where('created_at', '<=', $date)->get();
+        $Data2 = Muabánròngtheomã::where('created_at', '<=', $date)->get();
+
+        $getData = [
+            $Data1, $Data2
+        ];
+        return response()->json([
+            "message" => "data",
+            "status" => "success",
+            "data" => $getData
+        ], 200);
+    }
+    public function data_fromBoth($start_date, $end_date)
+    {
+        $Data1 = Data::where('created_at', '>=', $start_date)
+            ->where('created_at', '<=', $end_date)->get();
+
+        $Data2 = Muabánròngtheomã::where('created_at', '>=', $start_date)
+            ->where('created_at', '<=', $end_date)->get();
+        $getData = [
+            $Data1, $Data2
+        ];
+        return response()->json([
+            "message" => "data",
+            "status" => "success",
+            "data" => $getData
+        ], 200);
+    }
+    public function get_Muabánròngtheomã_dataById($id)
+    {
+        $Data1 = Muabánròngtheomã::where("data_id", $id)->get();
+        $Data2 = Data::where("id", $id)->get();
+        $getData=[
+            $Data1,$Data2
+        ];
+        return response()->json([
+            "message" => "data",
+            "status" => "success",
+            "data" => $getData
+        ], 200);
+    }
+    public function get_dataById($id)
+    {
+        $Data1 = Data::with('muabánròngtheomãData')->where("id", $id)->get();
+        $Data2 = Data::where("id", $id)->get();
+        $getData=[
+            $Data1,$Data2
+        ];
+        return response()->json([
+            "message" => "data",
+            "status" => "success",
+            "data" => $getData
+        ], 200);
+    }
+    public function get_total_data()
+    {
+        $getData = TotalData::orderBy('created_at', 'desc')->take(5)->get();
+
+        return response()->json([
+            "message" => "data",
+            "status" => "success",
+            "data" => $getData
+        ], 200);
+    }
+    public function getStock()
+    {
+        $getData =  Muabánròngtheomã::select('Mã')->distinct()->get();
+
+        return response()->json([
+            "message" => "data",
+            "status" => "success",
+            "data" => $getData
+        ], 200);
+    }
+    public function getDataBycatagroy($catagory)
+    {
+        $Data1 = Muabánròngtheomã::where("Mã",$catagory)->distinct("Mã")->get();
+        $data_ids=new Collection();
+        foreach($Data1 as $data){
+            $data_ids->push($data->data_id);
+        }
+        $Data2 = Data::whereIn("id",$data_ids)->get();
+
+        $getData=[
+            $Data1,$Data2
+        ];
+        return response()->json([
+            "message" => "data",
+            "status" => "success",
+            "data" => $getData
+        ], 200);
     }
 }

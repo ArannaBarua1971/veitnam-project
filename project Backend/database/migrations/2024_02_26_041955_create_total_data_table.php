@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('diễn_biến_muabáns', function (Blueprint $table) {
+        Schema::create('total_data', function (Blueprint $table) {
             $table->id();
-            $table->float("Cá_nhân_trong_nước")->nullable();
-            $table->float("Tổ_chức_trong_nước")->nullable();
-            $table->float("Tự_doanh")->nullable();
-            $table->float("Nước_ngoài")->nullable();
+            $table->float("Cá_nhân_trong_nước")->default(0);
+            $table->float("Tổ_chức_trong_nước")->default(0);
+            $table->float("Tự_doanh")->default(0);
+            $table->float("Nước_ngoài")->default(0);
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('diễn_biến_muabáns');
+        Schema::dropIfExists('total_data');
     }
 };

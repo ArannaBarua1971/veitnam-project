@@ -8,39 +8,210 @@ function Data() {
   const navigate = useNavigate();
   const [datas1, setDatas1] = useState([]);
   const [datas2, setDatas2] = useState([]);
-  const [datas3, setDatas3] = useState([]);
+  const [start_date, setStartDate] = useState(null);
+  const [end_date, setEndDate] = useState(null);
+  const [selectTable1, setSelectTable1] = useState(-1);
+  const [selectTable2, setSelectTable2] = useState(-1);
+  const [selectTable2Root, setSelectTable2Root] = useState(-1);
+  const [allCatagory, setallCatagory] = useState([]);
+  const [selectCatagory, setSelectCatagory] = useState();
 
-  useEffect(() => {
-    axios
+  const [Cá_nhân_trong_nước, setCá_nhân_trong_nước] = useState(0);
+  const [Tổ_chức_trong_nước, setTổ_chức_trong_nước] = useState(0);
+  const [Tự_doanh, setTự_doanh] = useState(0);
+  const [Nước_ngoài, setNước_ngoài] = useState(0);
+  const [chart_data, setChartData] = useState();
+
+  // after loading page
+  const get_Data = async () => {
+    await axios
       .get(`${conf}/get_Data`)
       .then((response) => {
         setDatas1(response.data.data);
+        setCá_nhân_trong_nước(0);
+        setTổ_chức_trong_nước(0);
+        setTự_doanh(0);
+        setNước_ngoài(0);
+
+        response.data.data.map((data) => {
+          setCá_nhân_trong_nước((pre) => data.Cá_nhân_trong_nước + pre);
+          setTổ_chức_trong_nước((pre) => data.Tổ_chức_trong_nước + pre);
+          setTự_doanh((pre) => data.Tự_doanh + pre);
+          setNước_ngoài((pre) => data.Nước_ngoài + pre);
+        });
       })
       .catch((error) => console.log(error));
-  }, []);
-  useEffect(() => {
-    axios
+  };
+
+  const get_Muabánròngtheomã_data = async () => {
+    await axios
       .get(`${conf}/get_Muabánròngtheomã_data`)
       .then((response) => {
         setDatas2(response.data.data);
       })
       .catch((error) => console.log(error));
-  }, []);
+  };
 
+  // after change date
+  const getDataBydate = async () => {
+    if (end_date == null || end_date == "") {
+      await axios
+        .get(`${conf}/data_fromStart/${start_date}`)
+        .then((response) => {
+          setDatas1(response.data.data[0]);
+          setDatas2(response.data.data[1]);
+        })
+        .catch((error) => console.log(error));
+    } else if (start_date == null || start_date == "") {
+      await axios
+        .get(`${conf}/data_fromEnd/${end_date}`)
+        .then((response) => {
+          setDatas1(response.data.data[0]);
+          setDatas2(response.data.data[1]);
+        })
+        .catch((error) => console.log(error));
+    } else {
+      await axios
+        .get(`${conf}/data_fromBoth/${start_date}/${end_date}`)
+        .then((response) => {
+          setDatas1(response.data.data[0]);
+          setDatas2(response.data.data[1]);
+        })
+        .catch((error) => console.log(error));
+    }
+  };
   useEffect(() => {
-    axios
-      .get(`${conf}/get_Diễnbiếnmua_bán_data`)
+    getDataBydate();
+    setSelectTable1(-1);
+    setSelectTable2(-1);
+    setSelectCatagory("")
+  }, [start_date, end_date]);
+
+  const getDataBycatagroy = async () => {
+    await axios
+      .get(`${conf}/getDataBycatagroy/${selectCatagory}`)
       .then((response) => {
-        console.log(response.data.data)
-        setDatas3(response.data.data);
+        setDatas1(response.data.data[1]);
+        setDatas2(response.data.data[0]);
+        setCá_nhân_trong_nước(0);
+        setTổ_chức_trong_nước(0);
+        setTự_doanh(0);
+        setNước_ngoài(0);
+
+        response.data.data[1].map((data) => {
+          setCá_nhân_trong_nước((pre) => data.Cá_nhân_trong_nước + pre);
+          setTổ_chức_trong_nước((pre) => data.Tổ_chức_trong_nước + pre);
+          setTự_doanh((pre) => data.Tự_doanh + pre);
+          setNước_ngoài((pre) => data.Nước_ngoài + pre);
+        });
       })
       .catch((error) => console.log(error));
+  };
+  useEffect(() => {
+    if(selectCatagory!=""){
+
+      setSelectTable1(-1)
+      setSelectTable2(-1)
+      getDataBycatagroy();
+    }
+    else{
+      get_Data()
+      get_Muabánròngtheomã_data()
+    }
+  }, [selectCatagory]);
+
+  // after clicking row
+  const get_Muabánròngtheomã_dataById = async () => {
+    await axios
+      .get(`${conf}/get_Muabánròngtheomã_dataById/${selectTable1}`)
+      .then((response) => {
+        setDatas2(response.data.data[0]);
+        response.data.data[1].map((data) => {
+          setCá_nhân_trong_nước(data.Cá_nhân_trong_nước);
+          setTổ_chức_trong_nước(data.Tổ_chức_trong_nước);
+          setTự_doanh(data.Tự_doanh);
+          setNước_ngoài(data.Nước_ngoài);
+        });
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const get_dataById = async () => {
+    await axios
+      .get(`${conf}/get_dataById/${selectTable2Root}`)
+      .then((response) => {
+        setDatas1(response.data.data[0]);
+
+        response.data.data[1].map((data) => {
+          setCá_nhân_trong_nước(data.Cá_nhân_trong_nước);
+          setTổ_chức_trong_nước(data.Tổ_chức_trong_nước);
+          setTự_doanh(data.Tự_doanh);
+          setNước_ngoài(data.Nước_ngoài);
+        });
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const table2 = (id, data_id) => {
+    setSelectTable2(id);
+    setSelectTable2Root(data_id);
+  };
+
+  useEffect(() => {
+    if(selectTable1!=-1){
+      get_Muabánròngtheomã_dataById()
+    }
+    else{
+      setSelectCatagory("")
+      get_Data()
+      get_Muabánròngtheomã_data()
+    }
+  }, [selectTable1]);
+
+  useEffect(() => {
+    if (selectTable2 != -1) {
+      get_dataById();
+    } else {
+      get_Data();
+      get_Muabánròngtheomã_data();
+    setSelectCatagory("")
+
+    }
+  }, [selectTable2]);
+
+  const getTotalData = async () => {
+    await axios
+      .get(`${conf}/get_total_data`)
+      .then((response) => {
+        setChartData(response.data.data);
+      })
+      .catch((error) => console.log(error));
+  };
+  const getStock = async () => {
+    await axios
+      .get(`${conf}/getStock`)
+      .then((response) => {
+        setallCatagory(response.data.data);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  useEffect(() => {
+    get_Muabánròngtheomã_data();
+    get_Data();
+    getStock();
+    getTotalData();
+
+    setSelectTable1(-1);
+    setSelectTable2(-1);
+    setStartDate("");
+    setEndDate("");
   }, []);
 
   return (
-    <div className="container">
-      <section id="short-deal">
-        <div className="heading">
+    <div className="p-5 d-flex main_background  position-relative overflow-y-auto">
+      <section id="short-deal" className="col-lg-12">
+        <div className="heading mb-3">
           <h3>Diễn biến giao dịch khớp lệnh theo loại nhà đầu tư</h3>
         </div>
 
@@ -75,7 +246,7 @@ function Data() {
                       for="post-form-2"
                       className="form-label form-labelpost"
                     >
-                      Post Date
+                     Khung thời gian
                     </label>
                     <div className="row">
                       <div className="col-lg-6">
@@ -83,6 +254,10 @@ function Data() {
                           type="date"
                           className="datepicker form-control"
                           id="post-form-2"
+                          value={start_date}
+                          onChange={(e) => {
+                            setStartDate(e.target.value);
+                          }}
                         />
                       </div>
                       <div className="col-lg-6">
@@ -90,6 +265,10 @@ function Data() {
                           type="date"
                           className="datepicker form-control"
                           id="post-form-2"
+                          value={end_date}
+                          onChange={(e) => {
+                            setEndDate(e.target.value);
+                          }}
                         />
                       </div>
                     </div>
@@ -103,33 +282,123 @@ function Data() {
                       for="post-form-2"
                       className="form-label form-labelpost"
                     >
-                      Category Select
+                     Chọn mã
                     </label>
 
                     <select
-                      className="form-select form-select-sm"
+                      className="form-select form-select-sm form-control"
                       aria-label="Small select example"
+                      onChange={(e) => setSelectCatagory(e.target.value)}
                     >
-                      <option selected>All</option>
-                      <option value="1">AAA</option>
-                      <option value="2">AAM</option>
-                      <option value="3">AAT</option>
+                      <option value="">
+                        No one
+                      </option>
+                      {allCatagory.map((catagory, index) => (
+                        <>
+                          <option
+                            key={index}
+                            value={catagory.Mã}
+                            className="bg-none"
+                          >
+                            <input
+                              type="checkbox"
+                              name="option1"
+                              className="w-50"
+                              value="value1"
+                            />
+                            {catagory.Mã}
+                          </option>
+                        </>
+                      ))}
                     </select>
                   </div>
                 </div>
               </div>
             </div>
-
-            <div></div>
           </div>
         </div>
 
         <div className="data-list row">
           <div className="col-lg-6">
-            <table className="table table-dark">
+            <h6 className="my-4 fw-bold text-white mb-0">
+              Mua bán ròng theo ngành
+            </h6>
+            <div
+              className="table_data overflow-y-auto"
+              style={{ maxHeight: "500px" }}
+            >
+              <table className="table table-dark table-hover mb-0">
+                <thead>
+                  <tr className="table-active">
+                    <th scope="col">Phân ngành - ICB 2</th>
+                    <th scope="col">Cá nhân trong nước</th>
+                    <th scope="col">Tổ chức trong nước</th>
+                    <th scope="col">Tự doanh</th>
+                    <th scope="col">Nước ngoài</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {datas1 ? (
+                    <>
+                      {datas1.map((data, index) => (
+                        <tr
+                          key={index}
+                          onClick={(e) => setSelectTable1(data.id)}
+                          className={`${
+                            data.id != selectTable1 && selectTable1 != -1
+                              ? "table-secondary"
+                              : ""
+                          } cursor-pointer`}
+                        >
+                          <td>{data.Phânngành_ICB2}</td>
+                          <td
+                            className={`${
+                              data.Cá_nhân_trong_nước >= 0
+                                ? "text-success"
+                                : "text-danger"
+                            }`}
+                          >
+                            {data.Cá_nhân_trong_nước}
+                          </td>
+                          <td
+                            className={`${
+                              data.Tổ_chức_trong_nước >= 0
+                                ? "text-success"
+                                : "text-danger"
+                            }`}
+                          >
+                            {data.Tổ_chức_trong_nước}
+                          </td>
+                          <td
+                            className={`${
+                              data.Tự_doanh >= 0
+                                ? "text-success"
+                                : "text-danger"
+                            }`}
+                          >
+                            {data.Tự_doanh}
+                          </td>
+                          <td
+                            className={`${
+                              data.Nước_ngoài >= 0
+                                ? "text-success"
+                                : "text-danger"
+                            }`}
+                          >
+                            {data.Nước_ngoài}
+                          </td>
+                        </tr>
+                      ))}
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                </tbody>
+              </table>
+            </div>
+            <table className="table table-dark table-hover  mt-0">
               <thead>
-                <h6 className="my-2">Mua bán ròng theo ngành</h6>
-                <tr className="table-active">
+                <tr className="table-active d-none">
                   <th scope="col">Phân ngành - ICB 2</th>
                   <th scope="col">Cá nhân trong nước</th>
                   <th scope="col">Tổ chức trong nước</th>
@@ -138,85 +407,124 @@ function Data() {
                 </tr>
               </thead>
               <tbody>
-                {datas1.length ? (
-                  <>
-                    {datas1.map((data, index) => (
-                      <tr key={index}>
-                        <td>{data.Phânngành_ICB2}</td>
-                        <td
-                          className={`${
-                            data.Cá_nhân_trong_nước > 0
-                              ? "text-success"
-                              : "text-danger"
-                          }`}
-                        >
-                          {data.Cá_nhân_trong_nước}
-                        </td>
-                        <td
-                          className={`${
-                            data.Tổ_chức_trong_nước > 0
-                              ? "text-success"
-                              : "text-danger"
-                          }`}
-                        >
-                          {data.Tổ_chức_trong_nước}
-                        </td>
-                        <td
-                          className={`${
-                            data.Tự_doanh > 0 ? "text-success" : "text-danger"
-                          }`}
-                        >
-                          {data.Tự_doanh}
-                        </td>
-                        <td
-                          className={`${
-                            data.Nước_ngoài > 0 ? "text-success" : "text-danger"
-                          }`}
-                        >
-                          {data.Nước_ngoài}
-                        </td>
-                      </tr>
-                    ))}
-                  </>
-                ) : (
-                  <>
-                    <tr>
-                      <td>Ngân hàng</td>
-                      <td className="text-success">{9.8}</td>
-                      <td className="text-danger">-90.8</td>
-                      <td className="text-success">34.5</td>
-                      <td className="text-danger">-89.9</td>
-                    </tr>
-                    <tr>
-                      <td>Xây dựng và Vật liệu</td>
-                      <td className="text-danger">-909.8</td>
-                      <td className="text-success">{89.8}</td>
-                      <td className="text-success">34.5</td>
-                      <td className="text-danger">-89.9</td>
-                    </tr>
-                    <tr>
-                      <td>Bán lẻ</td>
-                      <td className="text-success">909.8</td>
-                      <td className="text-success">{89.8}</td>
-                      <td className="text-danger">-789.9</td>
-                      <td className="text-success">34.5</td>
-                    </tr>
-                    <tr>
-                      <td>Thực phẩm và đồ uống</td>
-                      <td className="text-danger">-99.8</td>
-                      <td className="text-success">{89.8}</td>
-                      <td className="text-danger">-789.9</td>
-                      <td className="text-success">34.5</td>
-                    </tr>
-                  </>
-                )}
+                <tr
+                  onClick={(e) => setSelectTable1(-1)}
+                  className={`cursor-pointer`}
+                >
+                  <td className="w-25">Tổng cộng</td>
+                  <td
+                    className={`${
+                      Cá_nhân_trong_nước >= 0 ? "text-success" : "text-danger"
+                    }`}
+                  >
+                    {Cá_nhân_trong_nước.toFixed(2)}
+                  </td>
+                  <td
+                    className={`${
+                      Tổ_chức_trong_nước >= 0 ? "text-success" : "text-danger"
+                    }`}
+                  >
+                    {Tổ_chức_trong_nước.toFixed(2)}
+                  </td>
+                  <td
+                    className={`${
+                      Tự_doanh >= 0 ? "text-success" : "text-danger"
+                    }`}
+                  >
+                    {Tự_doanh.toFixed(2)}
+                  </td>
+                  <td
+                    className={`${
+                      Nước_ngoài >= 0 ? "text-success" : "text-danger"
+                    }`}
+                  >
+                    {Nước_ngoài.toFixed(2)}
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
+
           <div className="col-lg-6">
-            <table className="table table-dark">
-              <thead>
-                <h6 className="my-2">Mua bán ròng theo ngành</h6>
+            <h6 className="my-4 fw-bold text-white col-lg-12">
+            Mua bán ròng theo mã
+            </h6>
+
+            <div
+              className="table_data overflow-y-auto"
+              style={{ maxHeight: "200px" }}
+            >
+              <table className="table table-dark mb-0">
+                <thead>
+                  <tr className="table-active">
+                    <th scope="col">Mã</th>
+                    <th scope="col">Cá nhân trong nước</th>
+                    <th scope="col">Tổ chức trong nước</th>
+                    <th scope="col">Tự doanh</th>
+                    <th scope="col">Nước ngoài</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {datas2 ? (
+                    <>
+                      {datas2.map((data, index) => (
+                        <tr
+                          key={index}
+                          onClick={(e) => {
+                            table2(data.id, data.data_id);
+                          }}
+                          className={`${
+                            data.id != selectTable2 && selectTable2 != -1
+                              ? "table-secondary"
+                              : ""
+                          } cursor-pointer`}
+                        >
+                          <td>{data.Mã}</td>
+                          <td
+                            className={`${
+                              data.Cá_nhân_trong_nước > 0
+                                ? "text-success"
+                                : "text-danger"
+                            }`}
+                          >
+                            {data.Cá_nhân_trong_nước}
+                          </td>
+                          <td
+                            className={`${
+                              data.Tổ_chức_trong_nước > 0
+                                ? "text-success"
+                                : "text-danger"
+                            }`}
+                          >
+                            {data.Tổ_chức_trong_nước}
+                          </td>
+                          <td
+                            className={`${
+                              data.Tự_doanh > 0 ? "text-success" : "text-danger"
+                            }`}
+                          >
+                            {data.Tự_doanh}
+                          </td>
+                          <td
+                            className={`${
+                              data.Nước_ngoài > 0
+                                ? "text-success"
+                                : "text-danger"
+                            }`}
+                          >
+                            {data.Nước_ngoài}
+                          </td>
+                        </tr>
+                      ))}
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                </tbody>
+              </table>
+            </div>
+            <table className="table table-dark ">
+              <thead className="d-none">
                 <tr className="table-active">
                   <th scope="col">Mã</th>
                   <th scope="col">Cá nhân trong nước</th>
@@ -226,79 +534,46 @@ function Data() {
                 </tr>
               </thead>
               <tbody>
-                {datas2.length ? (
-                  <>
-                    {datas2.map((data, index) => (
-                      <tr key={index}>
-                        <td>{data.Mã}</td>
-                        <td
-                          className={`${
-                            data.Cá_nhân_trong_nước > 0
-                              ? "text-success"
-                              : "text-danger"
-                          }`}
-                        >
-                          {data.Cá_nhân_trong_nước}
-                        </td>
-                        <td
-                          className={`${
-                            data.Tổ_chức_trong_nước > 0
-                              ? "text-success"
-                              : "text-danger"
-                          }`}
-                        >
-                          {data.Tổ_chức_trong_nước}
-                        </td>
-                        <td
-                          className={`${
-                            data.Tự_doanh > 0 ? "text-success" : "text-danger"
-                          }`}
-                        >
-                          {data.Tự_doanh}
-                        </td>
-                        <td
-                          className={`${
-                            data.Nước_ngoài > 0 ? "text-success" : "text-danger"
-                          }`}
-                        >
-                          {data.Nước_ngoài}
-                        </td>
-                      </tr>
-                    ))}
-                  </>
-                ) : (
-                  <>
-                    <tr>
-                      {" "}
-                      <td>MWG</td>
-                      <td className="text-danger">{-99.8}</td>
-                      <td className="text-danger">-90.8</td>
-                      <td className="text-success">34.5</td>
-                      <td className="text-danger">-89.9</td>
-                    </tr>
-                    <tr>
-                      <td>DGW</td>
-                      <td className="text-danger">-909.8</td>
-                      <td className="text-danger">{-89.8}</td>
-                      <td className="text-success">34.5</td>
-                      <td className="text-danger">-89.9</td>
-                    </tr>
-                    <tr>
-                      <td>AST</td>
-                      <td className="text-success">909.8</td>
-                      <td className="text-success">{89.8}</td>
-                      <td className="text-danger">-789.9</td>
-                      <td className="text-success">34.5</td>
-                    </tr>
-                  </>
-                )}
+                <tr
+                  onClick={(e) => setSelectTable2(-1)}
+                  className={`cursor-pointer`}
+                >
+                  <td className="text-start">Tổng cộng</td>
+                  <td
+                    className={`${
+                      Cá_nhân_trong_nước >= 0 ? "text-success" : "text-danger"
+                    }`}
+                  >
+                    {Cá_nhân_trong_nước.toFixed(2)}
+                  </td>
+                  <td
+                    className={`${
+                      Tổ_chức_trong_nước >= 0 ? "text-success" : "text-danger"
+                    }`}
+                  >
+                    {Tổ_chức_trong_nước.toFixed(2)}
+                  </td>
+                  <td
+                    className={`${
+                      Tự_doanh >= 0 ? "text-success" : "text-danger"
+                    }`}
+                  >
+                    {Tự_doanh.toFixed(2)}
+                  </td>
+                  <td
+                    className={`${
+                      Nước_ngoài >= 0 ? "text-success" : "text-danger"
+                    }`}
+                  >
+                    {Nước_ngoài.toFixed(2)}
+                  </td>
+                </tr>
               </tbody>
             </table>
-            {/* <div className="images "> */}
-              {/* <img width="50%" src="./imgs/dataChart.png" alt="" />
-              <img width="50%" src="./imgs/dataChart.png" alt="" /> */}
-              <DataChart chart_Data={datas3}/>
-            {/* </div> */}
+
+            <div className="images w-100 ">
+              <DataChart chart_Data={chart_data} />
+            </div>
           </div>
         </div>
       </section>

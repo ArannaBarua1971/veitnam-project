@@ -160,7 +160,7 @@ function CheckOutDetails() {
   return (
     <div className="bg-white CheckOutDetails">
       {/* header section */}
-      <Header />
+      <Header/>
 
       <div className="container mt-3">
         {/* <!-- //main form starts here --> */}

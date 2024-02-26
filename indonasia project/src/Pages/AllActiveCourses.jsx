@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import conf from "../conf/conf";
-import { Button } from "../components";
+import { Button, ContentHeader } from "../components";
 function AllActiveCourses() {
   const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
@@ -19,22 +19,22 @@ function AllActiveCourses() {
     getAllCourses();
   }, []);
 
-  const course_details=(slug)=>{
-    localStorage.setItem("course_slug",JSON.stringify({"course_slug":slug}))
-    navigate(`/course_details`)
-  }
+  const course_details = (slug) => {
+    localStorage.setItem("course_slug", JSON.stringify({ course_slug: slug }));
+    navigate(`/course_details`);
+  };
   return (
     <div>
-      <div className="container">
+      <div className="p-5 d-flex main_background  position-relative  overflow-y-auto ">
         <div id="videos">
-          <div className="row">
-            <div className="courses-title mt-5">
-              <h3>Courses</h3>
-            </div>
+          <div className="main_content catagory_title text-white col-sm-11">
+            <ContentHeader className="DealHeader">
+              Khóa đào tạo hội viên
+            </ContentHeader>
           </div>
           <div className="row mt-2">
             {courses.map((course, index) => (
-              <div key={index} className="col-lg-4 col-md-6 col-sm-12 my-2">
+              <div key={index} className="col-lg-3 col-md-6 col-sm-12 my-2">
                 <div className="card" style={{ width: "18rem;" }}>
                   <img
                     src={course.course_thumb_url}
@@ -47,7 +47,7 @@ function AllActiveCourses() {
                       {course.course_description != "" ? (
                         <div
                           dangerouslySetInnerHTML={{
-                            __html: course.course_description.substr(0,20),
+                            __html: course.course_description.substr(0, 20),
                           }}
                         />
                       ) : (
@@ -56,7 +56,7 @@ function AllActiveCourses() {
                       ...
                     </p>
                     <Button
-                      onClick={()=>course_details(course.slug)}
+                      onClick={() => course_details(course.slug)}
                       className="btn-style"
                     >
                       See More

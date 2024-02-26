@@ -23616,7 +23616,7 @@
   border-left: 4px solid transparent;
 }
 .videoSection .vizew-nav-tab .nav-link.active {
-  background-color: #4d5051;
+  background-color: #4d5051 !important;
   border-left-color: #db4437;
 }
 .videoSection .vizew-breadcrumb {
@@ -23922,6 +23922,29 @@
   text-align: center;
   padding: 0 0 0 3px;
   z-index: 99;
+}
+.videoSection .single-feature-post.video-post .pause-btn {
+  position: absolute;
+  margin-top: -30px;
+  margin-left: -30px;
+  top: 50%;
+  left: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+  background-color: #db4437;
+  border-radius: 50%;
+  color: #ffffff;
+  line-height: 60px;
+  text-align: center;
+  padding: 0 0 0 3px;
+  z-index: 99;
+  opacity: 0;
+  visibility: hidden;
+}
+.videoSection .single-feature-post.video-post:hover .pause-btn{
+  opacity: 1;
+  visibility: visible;
 }
 @media only screen and (max-width: 767px) {
   .videoSection .single-feature-post.video-post .play-btn {

@@ -16,4 +16,8 @@ class Data extends Model
         "Tự_doanh",
         "Nước_ngoài",
     ];
+
+    public function muabánròngtheomãData(){
+        return $this->hasMany(Muabánròngtheomã::class);
+    }
 }

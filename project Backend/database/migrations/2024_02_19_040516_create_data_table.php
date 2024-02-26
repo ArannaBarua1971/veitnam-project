@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('data', function (Blueprint $table) {
             $table->id();
-            $table->longText("Phânngành_ICB2")->nullable();
-            $table->float("Cá_nhân_trong_nước")->nullable();
-            $table->float("Tổ_chức_trong_nước")->nullable();
-            $table->float("Tự_doanh")->nullable();
-            $table->float("Nước_ngoài")->nullable();
+            $table->longText("Phânngành_ICB2");
+            $table->float("Cá_nhân_trong_nước")->default(0);
+            $table->float("Tổ_chức_trong_nước")->default(0);
+            $table->float("Tự_doanh")->default(0);
+            $table->float("Nước_ngoài")->default(0);
             $table->timestamps();
         });
     }

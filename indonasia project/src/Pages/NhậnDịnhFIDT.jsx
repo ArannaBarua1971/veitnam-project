@@ -63,7 +63,7 @@ function NhậnDịnhFIDT() {
   return (
     <div
       id="NhậnDịnhfidt "
-      className="pt-5 d-flex main_background overflow position-relative flex-wrap"
+      className="p-5 d-flex main_background  position-relative"
     >
       {/* <!-- without lock article container --> */}
       <div className="main_content catagory_title text-white col-sm-11 mx-auto">
