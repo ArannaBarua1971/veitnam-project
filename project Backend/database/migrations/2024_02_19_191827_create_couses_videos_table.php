@@ -17,10 +17,10 @@ return new class extends Migration
             $table->foreignId("course_id")->constrained()->onUpdate("cascade")->onDelete("cascade");
             $table->longText("slug")->unique();
             $table->boolean('status')->default(true);
-            $table->longText("video_thumb");
-            $table->longText("video_thumb_url");
-            $table->string("video");
-            $table->string("video_url");
+            $table->longText("video_thumb")->nullable();
+            $table->longText("video_thumb_url")->nullable();
+            $table->string("video")->nullable();
+            $table->string("video_url")->nullable();
             $table->longText("description")->nullable();
             $table->timestamps();
         });

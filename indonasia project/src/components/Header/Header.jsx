@@ -5,7 +5,7 @@ function Header() {
 
   return (
     <section className="logoDesign py-2">
-      <Logo src="../../../public/imgs/Logo.png" className="cursor-pointer p-0" style={{ width:"100px" }} />
+      <Logo src="/imgs/Logo.png" className="cursor-pointer p-0" style={{ width:"100px" }} />
     </section>
   );
 }

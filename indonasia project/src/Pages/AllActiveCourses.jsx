@@ -25,16 +25,17 @@ function AllActiveCourses() {
   };
   return (
     <div>
-      <div className="p-5 d-flex main_background  position-relative  overflow-y-auto ">
-        <div id="videos">
-          <div className="main_content catagory_title text-white col-sm-11">
+      <div className="p-5 d-flex main_background  position-relative  overflow-y-auto flex-wrap">
+        <div id="videos" className="w-100">
+          <div className="main_content catagory_title text-white">
             <ContentHeader className="DealHeader">
               Khóa đào tạo hội viên
             </ContentHeader>
           </div>
-          <div className="row mt-2">
+
+          <div className="d-flex flex-wrap mt-2">
             {courses.map((course, index) => (
-              <div key={index} className="col-lg-3 col-md-6 col-sm-12 my-2">
+              <div key={index} className="col-lg-4 col-md-6 col-sm-12 my-2 ">
                 <div className="card" style={{ width: "18rem;" }}>
                   <img
                     src={course.course_thumb_url}
@@ -44,7 +45,7 @@ function AllActiveCourses() {
                   <div className="card-body">
                     <h5 className="card-title">{course.course_title}</h5>
                     <p className="card-text">
-                      {course.course_description != "" ? (
+                      {course.course_description  ? (
                         <div
                           dangerouslySetInnerHTML={{
                             __html: course.course_description.substr(0, 20),

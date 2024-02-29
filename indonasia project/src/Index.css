@@ -593,6 +593,9 @@ a {
   .GóiDịchVụ .IDP {
     flex-wrap: wrap;
   }
+  #videos .card {
+    margin: 2px;
+  }
 }
 @media (max-width: 767.98px) and (min-width: 576px) {
   .GóiDịchVụ .allServices #card {
@@ -600,6 +603,9 @@ a {
   }
   .GóiDịchVụ .IDP {
     flex-wrap: wrap;
+  }
+  #videos .card {
+    margin: 0 20px !important;
   }
 }
 @media (max-width: 575.98px) {
@@ -1820,8 +1826,7 @@ a {
 }
 
 #videos .card {
-  width: 21rem !important;
-  margin: 0 auto;
+  margin: 0 40px;
 }
 #videos .card-img-top {
   height: 225px !important;
@@ -1864,6 +1869,9 @@ a {
   .all_video {
     margin-top: 120px;
   }
+  #videos .card {
+    margin: 2px;
+  }
 }
 @media (max-width: 1199.98px) and (min-width: 992px) {
   .content-videos {
@@ -1884,8 +1892,11 @@ a {
   .all_video {
     height: 350px;
   }
-}
-@media (max-width: 1199.98px) and (min-width: 992px) {
+  #videos .card {
+    margin: 0px 2px;
+  }
+  
+
   .content-videos {
     margin-top: 0;
   }
@@ -1897,7 +1908,20 @@ a {
     width: 100%;
   }
 }
+@media (max-width: 991.98px) and (min-width: 768px){
+  #videos .card {
+    margin: 0px 20px;
+  }
+}
+@media (max-width: 767.98px) and (min-width: 576px){
+  #videos .card {
+    margin: 0px 50px !important;
+  }
+}
 @media (max-width: 575.98px) {
+  #videos .card {
+    margin: 2px;
+  }
   .content-videos {
     margin-top: 0;
   }

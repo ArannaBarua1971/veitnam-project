@@ -3,7 +3,6 @@ import { ContentHeader, Lock } from "../components";
 import { useNavigate } from "react-router-dom";
 import conf from "../conf/conf";
 import axios from "axios";
-import MainContainer from "../container/MainContainer";
 
 function NhậnDịnhFIDT() {
   const [lockArticle, setLockArticle] = useState("");
@@ -61,21 +60,20 @@ function NhậnDịnhFIDT() {
   }, []);
 
   return (
-    <div
-      id="NhậnDịnhfidt "
-      className="p-5 d-flex main_background  position-relative"
+    <section
+      id="Tổngquan"
+      className="p-5  main_background  position-relative  overflow-y-auto"
     >
-      {/* <!-- without lock article container --> */}
-      <div className="main_content catagory_title text-white col-sm-11 mx-auto">
+      <div className="main_content ">
         <ContentHeader className="DealHeader">
           Nhận định thị trường
         </ContentHeader>
       </div>
-      <section className="main_content col-sm-10 mx-auto text-white">
+      <div className="main_content col-sm-11 mx-auto text-white">
         {!loginUser ? (
           <>
             <div
-              className=" first-pera d-block"
+              className=" first-pera d-block m-0"
               dangerouslySetInnerHTML={{
                 __html: unLockArticle.substr(0, unLockArticleShowLength),
               }}
@@ -103,9 +101,9 @@ function NhậnDịnhFIDT() {
               <div className="lockText ">
                 <div className="social_media">
                   <div className="social col-lg-12">
-                    <a className="anchore-social  bg-light" href="#">
+                    <a className="anchore-social  bg-light" href="#" onClick={()=>navigate("/login")}>
                       <img
-                        src="./imgs/download.png"
+                        src="./imgs/googleLogo.png"
                         height="18px"
                         alt="Google"
                       />{" "}
@@ -170,8 +168,8 @@ function NhậnDịnhFIDT() {
             )}
           </>
         )}
-      </section>
-    </div>
+      </div>
+    </section>
   );
 }
 

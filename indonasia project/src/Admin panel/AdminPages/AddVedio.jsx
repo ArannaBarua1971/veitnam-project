@@ -32,14 +32,14 @@ function AddVedio() {
           // setVideoThumb(response.data.data.video_thumb);
           // setVideo(response.data.data.video);
           setVideoDescription(response.data.data.description);
-          setCourseId(response.data.data.course_id)
+          setCourseId(response.data.data.course_id);
         })
         .catch((error) => console.log(error));
     }
     axios
       .get(`${conf}/getAll_course`)
       .then((response) => {
-        setCourses(response.data.data)
+        setCourses(response.data.data);
       })
       .catch((error) => console.log(error));
   }, []);
@@ -55,16 +55,19 @@ function AddVedio() {
     axios
       .post(`${conf}/upload_video`, formData)
       .then((response) => {
+        console.log(response.data);
         setVideoUploadLoader(false);
-        setValidationError({})
+        setValidationError({});
         notify("video added");
       })
       .catch((error) => {
         error = error.response.data.errors;
         setValidationError({ ...error });
+
         setVideoUploadLoader(false);
       });
   };
+  
   const editContent = () => {
     setVideoUploadLoader(true);
     const formData = new FormData();
@@ -77,7 +80,7 @@ function AddVedio() {
       .post(`${conf}/edit_video/${slug}`, formData)
       .then((response) => {
         setVideoUploadLoader(false);
-        setValidationError({})
+        setValidationError({});
         notify("video updated");
         setTimeout(() => navigate("/admin/all-vedio"), 2000);
       })
@@ -107,7 +110,7 @@ function AddVedio() {
           </Button>
         </div>
         <div className="shortDealFrom d-flex flex-wrap add">
-          <div className="catagory_selector col-lg-6">
+          <div className="catagory_selector col-md-6">
             <ContentHeader className="text-dark h5 py-3">
               Choose Course * :
             </ContentHeader>
@@ -119,12 +122,11 @@ function AddVedio() {
               value={course_id}
             >
               <option selected>Choose One</option>
-              {
-                courses.map((course,index)=>(
-
-                  <option key={index} value={course.id}>{course.course_title}</option>
-                ))
-              }
+              {courses.map((course, index) => (
+                <option key={index} value={course.id}>
+                  {course.course_title}
+                </option>
+              ))}
             </select>
           </div>
           <div className="col-md-6 add">
@@ -182,13 +184,14 @@ function AddVedio() {
               setContent={setVideoDescription}
             />
           </div>
-          <Button className="py-3 px-2" onClick={edit ? editContent : handleSubmission}>
+          <Button
+            className="py-3 px-2"
+            onClick={edit ? editContent : handleSubmission}
+          >
             {videoUploadLoader ? (
               <div class="spinner-border mx-2 " role="status"></div>
             ) : (
-              <>
-                {edit ? "Edit Course Video " : "Add Course Video"}
-              </>
+              <>{edit ? "Edit Course Video " : "Add Course Video"}</>
             )}
           </Button>
         </div>

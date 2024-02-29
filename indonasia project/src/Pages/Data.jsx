@@ -118,6 +118,7 @@ function Data() {
       get_Data()
       get_Muabánròngtheomã_data()
     }
+    
   }, [selectCatagory]);
 
   // after clicking row
@@ -158,25 +159,12 @@ function Data() {
   };
 
   useEffect(() => {
-    if(selectTable1!=-1){
-      get_Muabánròngtheomã_dataById()
-    }
-    else{
-      setSelectCatagory("")
-      get_Data()
-      get_Muabánròngtheomã_data()
-    }
+    console.log(selectTable1)
+      if(selectTable1!=-1)      get_Muabánròngtheomã_dataById()
   }, [selectTable1]);
 
   useEffect(() => {
-    if (selectTable2 != -1) {
-      get_dataById();
-    } else {
-      get_Data();
-      get_Muabánròngtheomã_data();
-    setSelectCatagory("")
-
-    }
+    if(selectTable2!=-1) get_dataById();
   }, [selectTable2]);
 
   const getTotalData = async () => {
@@ -195,17 +183,20 @@ function Data() {
       })
       .catch((error) => console.log(error));
   };
-
+  const allDataClear=()=>{
+    get_Data()
+    get_Muabánròngtheomã_data()
+    setSelectTable1(-1)
+    setSelectTable2(-1)
+    setStartDate("")
+    setEndDate("")
+    setSelectCatagory("")
+  }
   useEffect(() => {
     get_Muabánròngtheomã_data();
     get_Data();
     getStock();
     getTotalData();
-
-    setSelectTable1(-1);
-    setSelectTable2(-1);
-    setStartDate("");
-    setEndDate("");
   }, []);
 
   return (
@@ -291,7 +282,7 @@ function Data() {
                       onChange={(e) => setSelectCatagory(e.target.value)}
                     >
                       <option value="">
-                        No one
+                          All
                       </option>
                       {allCatagory.map((catagory, index) => (
                         <>
@@ -396,6 +387,7 @@ function Data() {
                 </tbody>
               </table>
             </div>
+
             <table className="table table-dark table-hover  mt-0">
               <thead>
                 <tr className="table-active d-none">
@@ -408,7 +400,7 @@ function Data() {
               </thead>
               <tbody>
                 <tr
-                  onClick={(e) => setSelectTable1(-1)}
+                  onClick={allDataClear}
                   className={`cursor-pointer`}
                 >
                   <td className="w-25">Tổng cộng</td>
@@ -535,7 +527,7 @@ function Data() {
               </thead>
               <tbody>
                 <tr
-                  onClick={(e) => setSelectTable2(-1)}
+                  onClick={allDataClear}
                   className={`cursor-pointer`}
                 >
                   <td className="text-start">Tổng cộng</td>

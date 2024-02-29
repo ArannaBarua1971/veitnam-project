@@ -590,11 +590,9 @@ class DaseboardController extends Controller
     {
         $req->validate([
             "title" => "required",
-            "video" => "required|max:500000",
+            "video" => "required",
             "video_thumb" => "required|mimes:jpeg,png,jpg",
             "course_id" => "required"
-        ], [
-            "video.max" => 'The video must be less than 500 MB'
         ]);
 
         $newVideo = new CousesVideo();
@@ -609,7 +607,7 @@ class DaseboardController extends Controller
         }
         $newVideo->slug = $slug;
 
-        // // Upload video thumb
+        // Upload video thumb
         $videoThumbExt = $req->file('video_thumb')->getClientOriginalExtension();
         $newFileName = "memberShipVideoThumbs" . time() . '.' . $videoThumbExt;
         $req->file('video_thumb')->storeAs('public', $newFileName);

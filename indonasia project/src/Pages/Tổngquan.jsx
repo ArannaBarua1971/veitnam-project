@@ -79,7 +79,7 @@ function Tổngquan() {
   return (
     <section
       id="Tổngquan"
-      className="p-5 d-flex main_background  position-relative   "
+      className="p-5  main_background  position-relative  overflow-y-auto"
     >
       {/* alert section */}
       {/* <div class="alert alert-success alert-dismissible fade show position-absolute z-1 top-0 w-100" style={{ height:"60px"}} role="alert">
@@ -92,15 +92,15 @@ function Tổngquan() {
           aria-label="Close"
         ></button>
       </div> */}
-      <div className="main_content catagory_title text-white col-sm-11 mx-auto">
+      <div className="main_content ">
         <ContentHeader className="DealHeader">Tổng quan</ContentHeader>
       </div>
-      <div className="main_content col-lg-10 col-sm-10 mx-auto text-white ">
+      <div className="main_content col-sm-11 mx-auto text-white ">
         {loginUser ? (
           <>
             {unlockArticle != "no article" ? (
               <div
-                className="first-pera d-block "
+                className="first-pera d-block mt-0"
                 dangerouslySetInnerHTML={{
                   __html: unlockArticle,
                 }}

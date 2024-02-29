@@ -22,10 +22,10 @@ function AllVideo() {
   }, []);
 
   const Delete = (id) => {
+    console.log(id)
     axios
       .post(`${conf}/Delete_sepecific_video/${id}`)
       .then((response) => {
-        console.log(response);
         getAllVideo();
       })
       .catch((error) => {
@@ -65,7 +65,7 @@ function AllVideo() {
             {/* all IDP */}
             <div className="IDP my-5 d-flex flex-wrap">
               {videos.map((video, index) => (
-                <Card key={index} className="col-lg-4 m-2">
+                <Card key={index} className="col-lg-4 col-md-6 m-2">
                   <img
                     src={video.video_thumb_url}
                     alt={video.video_thumb_url}
