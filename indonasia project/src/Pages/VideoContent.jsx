@@ -121,7 +121,7 @@ function VideoContent() {
               </div>
 
               <div className="ps-1 col-12 col-md-5 col-lg-4">
-                <ul className={`nav vizew-nav-tab ${videos.length <3 ? "d-flex flex-column":""}`} role="tablist">
+                <ul className={`nav vizew-nav-tab ${videos.length <=3 ? "d-flex flex-column":""}`} role="tablist">
                   {videos.map((video, index) => (
                     <li
                       key={index}

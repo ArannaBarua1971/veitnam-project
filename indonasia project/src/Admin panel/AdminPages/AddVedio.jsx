@@ -82,7 +82,7 @@ function AddVedio() {
         setVideoUploadLoader(false);
         setValidationError({});
         notify("video updated");
-        setTimeout(() => navigate("/admin/all-vedio"), 2000);
+        setTimeout(() => navigate("/admin/all-video"), 2000);
       })
       .catch((error) => {
         error = error.response.data.errors;
@@ -104,7 +104,7 @@ function AddVedio() {
           </ContentHeader>
           <Button
             className="py-2 my-3 bg-dark"
-            onClick={() => navigate("/admin/all-vedio")}
+            onClick={() => navigate("/admin/all-video")}
           >
             All Video
           </Button>

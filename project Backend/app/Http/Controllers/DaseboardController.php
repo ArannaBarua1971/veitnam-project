@@ -18,6 +18,7 @@ use App\Models\CheckoutDetail;
 use App\Models\CheckoutForCourse;
 use App\Models\DiễnBiếnMua_bán;
 use App\Models\DiễnBiếnMuabán;
+use App\Models\LectureArticle;
 use Illuminate\Support\Carbon;
 use App\Models\MemberShipVedio;
 use App\Models\MembershipsMonth;
@@ -1040,6 +1041,138 @@ class DaseboardController extends Controller
             'message' => 'Data deleted',
             'status' => 'success',
             'date' => $date
+        ], 200);
+    }
+
+    // add ,get and all lecture article
+    public function addLectureArticle(Request $req)
+    {
+        $req->validate([
+            "title" => "required",
+            "thumb" => "required|mimes:jpeg,png,jpg",
+            "description" => "required"
+        ]);
+
+        $newLectureArticle = new LectureArticle();
+        $newLectureArticle->title = $req->title;
+        $newLectureArticle->description = $req->description;
+
+        // Generate slug
+        $slug = Str::slug($req->title);
+        $found = LectureArticle::where('slug', 'LIKE', "%" . $slug . "%")->count();
+        if ($found) {
+            $slug = $slug . "-" . $found;
+        }
+        $newLectureArticle->slug = $slug;
+
+        // Upload Lecture thumb
+        $thumbExt = $req->file('thumb')->getClientOriginalExtension();
+        $newFileName = "LectureThumbs" . time() . '.' . $thumbExt;
+        $req->file('thumb')->storeAs('public', $newFileName);
+        $fileUrl = asset("storage/$newFileName");
+        $newLectureArticle->thumb_url = $fileUrl;
+        $newLectureArticle->thumb = $newFileName;
+
+        $newLectureArticle->save();
+
+        return response()->json([
+            'message' => 'Lecture added',
+            'status' => 'success',
+            'date' => $req->all()
+        ], 200);
+    }
+    public function getAllLectureArticle()
+    {
+        $allArticle = LectureArticle::get();
+
+        return response()->json([
+            'message' => 'all Lecture',
+            'status' => 'success',
+            'data' => $allArticle
+        ], 200);
+    }
+
+    public function deleteLectureArticle($slug)
+    {
+        $delete = LectureArticle::where("slug", $slug)->first();
+
+        $thumb_path = public_path('storage/' . $delete->thumb);
+        if (file_exists($thumb_path)) {
+            unlink($thumb_path);
+        }
+        $delete->delete();
+        
+        return response()->json([
+            'message' => 'Lecture is deleted',
+            'status' => 'success',
+            'data' => []
+        ], 200);
+    }
+
+    public function status_change_LectureArticle($id)
+    {
+        $article = LectureArticle::where("id", $id)->first();
+        $article->status = !$article->status;
+        $article->save();
+        return response()->json([
+            'message' => 'Lecture status changed',
+            'status' => 'success',
+            'data' => []
+        ], 200);
+    }
+
+    public function edit_LectureArticle(Request $req, $slug)
+    {
+        $req->validate([
+            "title" => "required",
+            "description" => "required"
+        ]);
+
+        $article = LectureArticle::where('slug', $slug)->first();
+        $article->title = $req->title;
+        $article->description = $req->description;
+
+        // Generate slug
+        $slug = Str::slug($req->title);
+        $found = LectureArticle::where('slug', 'LIKE', "%" . $slug . "%")->count();
+        if ($found) {
+            $slug = $slug . "-" . $found;
+        }
+        $article->slug = $slug;
+
+        // // Upload video thumb
+        if ($req->hasFile('thumb')) {
+            $thumb_path = public_path('storage/' . $article->thumb);
+            if (file_exists($thumb_path)) {
+                unlink($thumb_path);
+            }
+            $videoThumbExt = $req->file('thumb')->getClientOriginalExtension();
+            $newFileName = "LectureThumbs" . time() . '.' . $videoThumbExt;
+            $req->file('thumb')->storeAs('public', $newFileName);
+            $fileUrl = asset("storage/$newFileName");
+            $article->thumb_url = $fileUrl;
+            $article->thumb = $newFileName;
+        }
+
+
+        // // // Save new video
+        $article->save();
+
+        return response()->json([
+            "message" => "article edited successfully",
+            "status" => "success",
+            "data" => []
+        ], 200);
+    }
+
+    public function get_specificLectureArticle($slug)
+    {
+        $article = LectureArticle::where("slug", $slug)->first();
+
+        return response()->json([
+            "message" => "article",
+            "status" => "success",
+            "data" => $article
         ], 200);
     }
 }

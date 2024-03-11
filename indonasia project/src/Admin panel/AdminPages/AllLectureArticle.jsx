@@ -4,43 +4,46 @@ import conf from "../../conf/conf";
 import MainContainer from "../../container/MainContainer";
 import { ContentHeader, Button, Card } from "../adminComponents";
 import { useNavigate } from "react-router-dom";
-
-function AllVideo() {
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+function AllLectureArticle() {
   const navigate = useNavigate();
-  const [videos, setVideos] = useState([]);
+  const [articles, setArticles] = useState([]);
+  const notify = (message) => toast(message);
 
-  const getAllVideo = () => {
+  const getAllArticle = () => {
     axios
-      .get(`${conf}/get_all_video`)
+      .get(`${conf}/getAllLectureArticle`)
       .then((response) => {
-        setVideos(response.data.data);
+        setArticles(response.data.data)
       })
       .catch((error) => console.log(error));
   };
   useEffect(() => {
-    getAllVideo();
+    getAllArticle();
   }, []);
 
-  const Delete = (id) => {
-    console.log(id)
+  const Delete = (slug) => {
     axios
-      .post(`${conf}/Delete_sepecific_video/${id}`)
+      .post(`${conf}/deleteLectureArticle/${slug}`)
       .then((response) => {
-        getAllVideo();
+        notify(response.data.message)
+        getAllArticle();
       })
       .catch((error) => {
         console.log(error);
       });
   };
   const editContent = (slug) => {
-    navigate(`/admin/Add-video/${slug}`)
+    navigate(`/admin/Add-Lecture-Article/${slug}`)
   };
   const statusChange = (id) => {
-    console.log(id);
     axios
-      .post(`${conf}/status_change_video/${id}`)
+      .post(`${conf}/status_change_LectureArticle/${id}`)
       .then((response) => {
-        getAllVideo();
+        notify(response.data.message)
+
+        getAllArticle();
       })
       .catch((error) => {
         console.log(error);
@@ -49,35 +52,37 @@ function AllVideo() {
   return (
     <div>
       <div>
+        {/* notify toast */}
+      <ToastContainer />
         {/* Go to IDP section */}
         <section id="IDP">
           <MainContainer className="mx-auto  col-xl-9 col-sm-11 my-3">
             <div className="d-flex flex-wrap justify-content-between align-items-center mt-3">
-              <ContentHeader>All Video for Courses</ContentHeader>
+              <ContentHeader>All lecture Article</ContentHeader>
               <Button
                 className="py-2 mx-2 bg-dark"
-                onClick={() => navigate("/admin/Add-video")}
+                onClick={() => navigate("/admin/Add-Lecture-Article")}
               >
-                Add Video
+                Add Lecture Article
               </Button>
             </div>
 
             {/* all IDP */}
             <div className="IDP my-5 d-flex flex-wrap">
-              {videos.map((video, index) => (
+              {articles.map((article, index) => (
                 <Card key={index} className="col-lg-4 col-md-6 m-2" style={{ "width":"300px" }}>
                   <img
-                    src={video.video_thumb_url}
-                    alt={video.video_thumb_url}
+                    src={article.thumb_url}
+                    alt={article.thumb}
                     height={"300px"}
                     width={"100%"}
                   />
-                  <p>{video.title}</p>
-                  {video.description ? (
+                  <p>{article.title}</p>
+                  {article.description ? (
                     <div
                       className="inline"
                       dangerouslySetInnerHTML={{
-                        __html: video.description.substr(0, 100),
+                        __html: article.description.substr(0, 100),
                       }}
                     />
                   ) : (
@@ -85,19 +90,19 @@ function AllVideo() {
                   )}
                   <div className="d-flex flex-wrap justify-content-between">
                     <Button
-                      onClick={() => editContent(video.slug)}
+                      onClick={() => editContent(article.slug)}
                       className="p-1 mt-3  border-0 rounded bg-primary col-sm-5"
                     >
                       Edit
                     </Button>
                     <Button
-                      onClick={() => statusChange(video.id)}
+                      onClick={() => statusChange(article.id)}
                       className="p-1 mt-3  border-0 rounded bg-dark col-sm-5"
                     >
-                      {video.status ? "Deactive" : "active"}
+                      {article.status ? "Deactive" : "active"}  
                     </Button>
                     <Button
-                      onClick={() => Delete(video.id)}
+                      onClick={() => Delete(article.slug)}
                       className="p-1 mt-3  border-0 rounded bg-danger col-sm-5"
                     >
                       Delete
@@ -113,4 +118,4 @@ function AllVideo() {
   );
 }
 
-export default AllVideo;
+export default AllLectureArticle;

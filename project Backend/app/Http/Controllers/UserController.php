@@ -9,6 +9,7 @@ use App\Models\Course;
 use App\Models\CousesVideo;
 use App\Models\Data;
 use App\Models\DiễnBiếnMuabán;
+use App\Models\LectureArticle;
 use App\Models\LongDeal;
 use App\Models\Membership;
 use App\Models\MemberShipVedio;
@@ -123,6 +124,40 @@ class UserController extends Controller
         }
     }
 
+    // forget password
+
+    public function forget_password(Request $req)
+    {
+        $req->validate([
+            "email" => "required|email"
+        ]);
+
+        $count = User::where("email", $req->email)->count();
+        $randomNumber = mt_rand(1000, 9999);
+
+        if ($count) {
+            $data['otp']=$randomNumber;
+            $data['email']=$req->email;
+            $data['title']="reset your password";
+
+            
+            Mail::send("mail.name", ['data' => $data], function ($message) use ($data) {
+                $message->to($data['email'])->subject($data['title']);
+            });
+            return response()->json([
+                "message" => "authorized ",
+                "status" => 'success',
+                "data" => $randomNumber
+            ], 200);
+        } else {
+            return response()->json([
+                "message" => "not authorize ",
+                "status" => 'failed',
+                "data" => []
+            ], 402);
+        }
+    }
+
     // update profile
     public function update_profile(Request $req)
     {
@@ -159,7 +194,7 @@ class UserController extends Controller
         ], 200);
     }
 
-    // update password
+    // update password and reset
     public function update_password(Request $req)
     {
 
@@ -174,6 +209,22 @@ class UserController extends Controller
             "message" => "password changed",
             "status" => "success",
             "data" => $user
+        ], 200);
+    }
+    public function reset_password(Request $req)
+    {
+
+        $req->validate([
+            "password" => "required|min:8"
+        ]);
+        $user = User::where("email", $req->email)->first();
+
+        $user->password = Hash::make($req->password);
+        $user->save();
+        return response()->json([
+            "message" => "password changed",
+            "status" => "success",
+            "data" => []
         ], 200);
     }
 
@@ -428,8 +479,8 @@ class UserController extends Controller
     {
         $Data1 = Muabánròngtheomã::where("data_id", $id)->get();
         $Data2 = Data::where("id", $id)->get();
-        $getData=[
-            $Data1,$Data2
+        $getData = [
+            $Data1, $Data2
         ];
         return response()->json([
             "message" => "data",
@@ -441,8 +492,8 @@ class UserController extends Controller
     {
         $Data1 = Data::with('muabánròngtheomãData')->where("id", $id)->get();
         $Data2 = Data::where("id", $id)->get();
-        $getData=[
-            $Data1,$Data2
+        $getData = [
+            $Data1, $Data2
         ];
         return response()->json([
             "message" => "data",
@@ -472,20 +523,41 @@ class UserController extends Controller
     }
     public function getDataBycatagroy($catagory)
     {
-        $Data1 = Muabánròngtheomã::where("Mã",$catagory)->distinct("Mã")->get();
-        $data_ids=new Collection();
-        foreach($Data1 as $data){
+        $Data1 = Muabánròngtheomã::where("Mã", $catagory)->distinct("Mã")->get();
+        $data_ids = new Collection();
+        foreach ($Data1 as $data) {
             $data_ids->push($data->data_id);
         }
-        $Data2 = Data::whereIn("id",$data_ids)->get();
+        $Data2 = Data::whereIn("id", $data_ids)->get();
 
-        $getData=[
-            $Data1,$Data2
+        $getData = [
+            $Data1, $Data2
         ];
         return response()->json([
             "message" => "data",
             "status" => "success",
             "data" => $getData
+        ], 200);
+    }
+
+    // getAllActiveLectureArticle
+
+    public function getAllActiveLectureArticle(){
+
+        $getAllActiveLectureArticle=LectureArticle::where('status',true)->get();
+        return response()->json([
+            "message" => "article",
+            "status" => "success",
+            "data" => $getAllActiveLectureArticle
+        ], 200);
+    }
+    public function get_sepecific_article($slug){
+
+        $getArticle=LectureArticle::where('slug',$slug)->orderBy('created_at', 'desc')->first();
+        return response()->json([
+            "message" => "article",
+            "status" => "success",
+            "data" => $getArticle
         ], 200);
     }
 }

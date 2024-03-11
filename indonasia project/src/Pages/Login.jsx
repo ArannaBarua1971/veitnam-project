@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Input, Header, Card, Button, ErrorMessage, Footer } from "../components";
+import React, { useState } from "react";
+import { Input, Header, Card, Button, ErrorMessage } from "../components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import conf from "../conf/conf";
@@ -73,7 +73,10 @@ function Login() {
         const id = response.data.data.user.id;
         const userData = { id, email, name };
         dispatch(login(userData));
-        localStorage.setItem("logWithThirdParty",JSON.stringify({login:true}))
+        localStorage.setItem(
+          "logWithThirdParty",
+          JSON.stringify({ login: true })
+        );
 
         navigate("/");
       })
@@ -91,10 +94,13 @@ function Login() {
 
       {/* login section */}
       <section className="LoginSection   d-flex justify-content-center align-items-center">
-      
         {/* login banner */}
         <div className="loginBanner  ">
-          <img src="/imgs/LoginBanner.png" className="rounded" alt="LoginBanner" />
+          <img
+            src="/imgs/LoginBanner.png"
+            className="rounded"
+            alt="LoginBanner"
+          />
         </div>
 
         {/* login form */}
@@ -141,9 +147,12 @@ function Login() {
           </Button>
           {/* another options */}
           <div className="option d-flex justify-content-between ">
-            <a className="text-dark" href="">
+            <button
+              className="text-dark bg-white border-0"
+              onClick={() => navigate("/Forget_password")}
+            >
               Quên mật khẩu
-            </a>
+            </button>
             <button
               className="text-dark bg-white border-0"
               onClick={() => navigate("/registration")}
@@ -176,10 +185,7 @@ function Login() {
             </GoogleOAuthProvider>
           </Button>
         </Card>
-
       </section>
-      
-      
     </div>
   );
 }

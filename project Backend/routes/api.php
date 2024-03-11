@@ -40,10 +40,13 @@ Route::controller(UserController::class)->name("user")->group(function () {
     // user register
     Route::post("/user_registration", "register")->name('.register');
     Route::post("/user_login", "login")->name('.login');
+    Route::post("/forget_password", "forget_password")->name('.forget_password');
 
     // update profile
     Route::post("/update_profile", "update_profile")->name(".update_profile");
     Route::post("/update_password", "update_password")->name(".update_password");
+    Route::post("/reset_password","reset_password")->name(".reset_password");
+
 
     // get active membership
     Route::get("/get-active-membership","get_active_membership")->name(".get_active_membership");
@@ -65,7 +68,9 @@ Route::controller(UserController::class)->name("user")->group(function () {
     Route::get("/get_sepecific_video/{slug}","get_sepecific_video")->name(".get_sepecific_video");
     Route::get("/getAllMembership/{email}",'getAllMembership')->name(".getAllMembership");
     Route::get("/getAllActiveCourse",'getAllActiveCourse')->name(".getAllActiveCourse");
+    Route::get("/getAllActiveLectureArticle",'getAllActiveLectureArticle')->name(".getAllActiveLectureArticle");
     Route::get("/getSpecificCourseDetails/{slug}",'getSpecificCourseDetails')->name(".getSpecificCourseDetails");
+    Route::get("/get_sepecific_article/{slug}",'get_sepecific_article')->name(".get_sepecific_article");
     Route::get("/get_ActiveCourse_video/{id}","get_ActiveCourse_video")->name(".get_ActiveCourse_video");
     Route::post("/addCheckoutForCourse","addCheckoutForCourse")->name(".addCheckoutForCourse");
     Route::get("/courseBuyVerify/{id}/{course_id}","courseBuyVerify")->name(".courseBuyVerify");
@@ -133,6 +138,12 @@ Route::controller(DaseboardController::class)->name("daseboard")->group(function
     // add and get Lock article
     Route::post("/add-lock-article","addLockArticle")->name(".addLockArticle");
     Route::get('/getLockArticle/{catagory}',"getLockArticle")->name(".getLockArticle");
+    Route::post("/addLectureArticle","addLectureArticle")->name(".addLectureArticle");
+    Route::get("/getAllLectureArticle","getAllLectureArticle")->name(".getAllLectureArticle");
+    Route::post("/deleteLectureArticle/{slug}","deleteLectureArticle")->name(".deleteLectureArticle");
+    Route::post("/status_change_LectureArticle/{id}","status_change_LectureArticle")->name(".status_change_LectureArticle");
+    Route::post("/edit_LectureArticle/{slug}","edit_LectureArticle")->name(".edit_LectureArticle");
+    Route::get("/get_specificLectureArticle/{slug}","get_specificLectureArticle")->name(".get_specificLectureArticle");
 
 
     // add and get Memberships

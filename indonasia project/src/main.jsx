@@ -42,6 +42,11 @@ import AllActiveCourses from "./Pages/AllActiveCourses.jsx";
 import AllCourses from "./Admin panel/AdminPages/AllCourses.jsx";
 import AllCourseBuyerUser from "./Admin panel/AdminPages/AllCourseBuyerUser.jsx";
 import AllData from "./Admin panel/AdminPages/AllData.jsx";
+import ForgetPassword from "./Pages/ForgetPassword.jsx";
+import AddLectureArticle from "./Admin panel/AdminPages/AddLectureArticle.jsx";
+import AllLectureArticle from "./Admin panel/AdminPages/AllLectureArticle.jsx";
+import AllActiveLectureArticle from "./Pages/AllActiveLectureArticle.jsx";
+import ArticleContentPart from "./Pages/ArticleContentPart.jsx";
 
 const router = createBrowserRouter([
   {
@@ -78,7 +83,7 @@ const router = createBrowserRouter([
           },
           {
             path: "/Khóa_đào_tạo_hội_viên",
-            element: <AdminProtected Component={AllActiveCourses} />,
+            element: <AllActiveCourses/>,
           },
 
           {
@@ -87,7 +92,11 @@ const router = createBrowserRouter([
           },
           {
             path: "/Bài-Giảng-Thực-Chiến",
-            element: <AdminProtected Component={Tổngquan} />,
+            element: <AdminProtected Component={AllActiveLectureArticle} />,
+          },
+          {
+            path: "/Bài-Giảng-Thực-Chiến-full",
+            element: <AdminProtected Component={ArticleContentPart} />,
           },
           {
             path: "/user-information",
@@ -106,6 +115,10 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      },
+      {
+        path: "/Forget_password",
+        element: <ForgetPassword />,
       },
       {
         path: "/registration",
@@ -142,11 +155,13 @@ const router = createBrowserRouter([
       { path: "/admin/add-asset/:id?", element: <AddAsset /> },
       { path: "/admin/all-Asset", element: <AllAsset /> },
       { path: "/admin/upload-data", element: <AddData /> },
-      { path: "/admin/Add-vedio/:slug?", element: <AddVedio /> },
-      { path: "/admin/all-vedio", element: <AllVideo /> },
+      { path: "/admin/Add-video/:slug?", element: <AddVedio /> },
+      { path: "/admin/all-video", element: <AllVideo /> },
       { path: "/admin/Add-course/:slug?", element: <AddCourse /> },
       { path: "/admin/all-course", element: <AllCourses /> },
       { path: "/admin/all-data", element: <AllData /> },
+      { path: "/admin/Add-Lecture-Article/:slug?", element: <AddLectureArticle /> },
+      { path: "/admin/all-Lecture-Article", element: <AllLectureArticle /> },
     ],
   },
 ]);

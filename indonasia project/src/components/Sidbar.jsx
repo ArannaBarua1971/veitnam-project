@@ -51,12 +51,12 @@ function Sidbar({ show }) {
       name: "Khóa đào tạo hội viên",
       icon: "fa-solid fa-arrow-up-right-dots",
       path: "/Khóa_đào_tạo_hội_viên",
-      lock: !verifyMemberShipUser,
+      lock: false,
     },
     {
       name: "Kiến Thức Đầu Tư",
       icon: "fa-solid fa-book",
-      path: "/Kiến-Thức-Đầu-Tư",
+      path: "https://n18.vn/kien-thuc-dau-tu/",
       lock: !verifyMemberShipUser,
     },
     {

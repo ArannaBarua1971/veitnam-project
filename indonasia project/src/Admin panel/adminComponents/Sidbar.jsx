@@ -56,8 +56,13 @@ function Sidbar({ className }) {
       icon: "fa-solid fa-user",
     },
     {
-      path: "/admin/Add-vedio",
+      path: "/admin/Add-video",
       name: "Add Video for Course",
+      icon: "fa-solid fa-user",
+    },
+    {
+      path: "/admin/Add-Lecture-Article",
+      name: "Add Lecture Article",
       icon: "fa-solid fa-user",
     },
   ];

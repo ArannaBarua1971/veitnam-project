@@ -1060,7 +1060,7 @@ a {
 
 /* without locked article part */
 .first-pera {
-  margin-top: 50px !important;
+  margin-top: 10px !important;
   align-items: center;
   justify-content: center;
   margin: auto;
