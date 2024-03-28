@@ -33,10 +33,10 @@ function Báocáo() {
           </div>
         </ContentHeader>
         <div className="tableOfShortDeal">
-          <table className="table longDeal">
+          <table className="table longDeal  ">
             <thead>
-              <tr>
-                <th scope="col" className="p-3">
+              <tr >
+                <th scope="col" className="p-3 ">
                   Mã CP
                 </th>
                 <th scope="col" className="p-3">
@@ -64,8 +64,8 @@ function Báocáo() {
             </thead>
             <tbody>
               {longDeals.map((deal, index) => (
-                <tr key={index}>
-                  <td className="bg-white p-3">{deal.MãCP ? deal.MãCP : ""}</td>
+                <tr key={index} >
+                  <td className="bg-white p-3 ">{deal.MãCP ? deal.MãCP : ""}</td>
                   <td className="bg-white p-3">
                     {deal.NgàyKN ? deal.NgàyKN : ""}
                   </td>

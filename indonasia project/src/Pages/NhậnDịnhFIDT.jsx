@@ -9,6 +9,7 @@ function NhậnDịnhFIDT() {
   const [unLockArticle, setUnLockArticle] = useState("");
   const [unLockArticleShowLength, setUnlockArticleShowLength] = useState();
   const [loginUser, setLoginUser] = useState(false);
+  const[date,setDate]=useState("")
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -23,6 +24,7 @@ function NhậnDịnhFIDT() {
     await axios
       .get(`${conf}/getArticle/Nhận định thị trường`)
       .then(function (response) {
+        setDate(response.data.data.updated_at)
         setUnLockArticle(response.data.data.article);
         setUnlockArticleShowLength(
           response.data.data.percentage
@@ -65,7 +67,7 @@ function NhậnDịnhFIDT() {
       className="p-5  main_background  position-relative  overflow-y-auto"
     >
       <div className="main_content ">
-        <ContentHeader className="DealHeader">
+        <ContentHeader className="DealHeader" date={date}>
           Nhận định thị trường
         </ContentHeader>
       </div>
@@ -145,7 +147,7 @@ function NhậnDịnhFIDT() {
           </>
         ) : (
           <>
-            {unLockArticle != "no article" ? (
+            {unLockArticle != "no more article..." ? (
               <div
                 className=" first-pera d-block"
                 dangerouslySetInnerHTML={{
@@ -156,7 +158,7 @@ function NhậnDịnhFIDT() {
               <></>
             )}
 
-            {lockArticle != "no article" ? (
+            {lockArticle != "no more article..." ? (
               <div
                 className=" first-pera d-block"
                 dangerouslySetInnerHTML={{

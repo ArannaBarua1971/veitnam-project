@@ -1,0 +1,5 @@
+1.design card 
+2.title hover and below date
+3. profile and container delete
+4. border in profile nav bar
+5 . login and logout text bold

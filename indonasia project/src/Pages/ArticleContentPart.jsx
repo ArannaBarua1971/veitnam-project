@@ -21,7 +21,7 @@ function ArticleContentPart() {
     getArticleData();
   }, [slug]);
   return (
-    <div className="p-5 main_background overflow position-relative tablepage1">
+    <div className="p-5  main_background  position-relative  overflow-y-auto">
       {/* short deal header */}
       <ContentHeader className="DealHeader pb-0">
         <Button
@@ -37,7 +37,7 @@ function ArticleContentPart() {
       <div className="ms-4">
         {/* header */}
 
-        <div className="course_description DealHeader">
+        <div className="course_description mt-4  main_content col-sm-11 mx-auto text-white   ">
           <div
             className="first-pera text-white"
             dangerouslySetInnerHTML={{

@@ -159,7 +159,6 @@ function Data() {
   };
 
   useEffect(() => {
-    console.log(selectTable1)
       if(selectTable1!=-1)      get_Muabánròngtheomã_dataById()
   }, [selectTable1]);
 
@@ -200,9 +199,9 @@ function Data() {
   }, []);
 
   return (
-    <div className="p-5 d-flex main_background  position-relative overflow-y-auto">
-      <section id="short-deal" className="col-lg-12">
-        <div className="heading mb-3">
+    <div className="dataTable p-5 d-flex main_background  position-relative overflow-y-auto ">
+      <section id="short-deal" className=" col-lg-12 container px-0 mx-auto">
+        <div className="heading my-3">
           <h3>Diễn biến giao dịch khớp lệnh theo loại nhà đầu tư</h3>
         </div>
 
@@ -229,7 +228,7 @@ function Data() {
           </div>
 
           <div className="option-section col-lg-6">
-            <div className="row">
+            <div className="d-flex justify-content-end gap-3 items-center flex-wrap">
               <div className="date-pick col-lg-6">
                 <div className="date-option">
                   <div className="mt-3 date-border">
@@ -311,16 +310,16 @@ function Data() {
 
         <div className="data-list row">
           <div className="col-lg-6">
-            <h6 className="my-4 fw-bold text-white mb-0">
+            <h6 className=" my-2 fw-bold text-white ">
               Mua bán ròng theo ngành
             </h6>
             <div
-              className="table_data overflow-y-auto"
-              style={{ maxHeight: "500px" }}
+              className="table_data overflow-y-auto bg-none"
+              style={{ maxHeight: "590px" }}
             >
-              <table className="table table-dark table-hover mb-0">
+              <table className="table  table-hover mb-0">
                 <thead>
-                  <tr className="table-active">
+                  <tr className="table-active" style={{ fontSize:"15px" }}>
                     <th scope="col">Phân ngành - ICB 2</th>
                     <th scope="col">Cá nhân trong nước</th>
                     <th scope="col">Tổ chức trong nước</th>
@@ -339,14 +338,15 @@ function Data() {
                             data.id != selectTable1 && selectTable1 != -1
                               ? "table-secondary"
                               : ""
-                          } cursor-pointer`}
+                          } cursor-pointer `}
+                          style={{ fontSize:"15px" }}
                         >
-                          <td>{data.Phânngành_ICB2}</td>
+                          <td >{data.Phânngành_ICB2}</td>
                           <td
                             className={`${
                               data.Cá_nhân_trong_nước >= 0
-                                ? "text-success"
-                                : "text-danger"
+                                ? "green"
+                                : "red"
                             }`}
                           >
                             {data.Cá_nhân_trong_nước}
@@ -354,8 +354,8 @@ function Data() {
                           <td
                             className={`${
                               data.Tổ_chức_trong_nước >= 0
-                                ? "text-success"
-                                : "text-danger"
+                                ? "green"
+                                : "red"
                             }`}
                           >
                             {data.Tổ_chức_trong_nước}
@@ -363,8 +363,8 @@ function Data() {
                           <td
                             className={`${
                               data.Tự_doanh >= 0
-                                ? "text-success"
-                                : "text-danger"
+                                ? "green"
+                                : "red"
                             }`}
                           >
                             {data.Tự_doanh}
@@ -372,8 +372,8 @@ function Data() {
                           <td
                             className={`${
                               data.Nước_ngoài >= 0
-                                ? "text-success"
-                                : "text-danger"
+                                ? "green"
+                                : "red"
                             }`}
                           >
                             {data.Nước_ngoài}
@@ -388,9 +388,9 @@ function Data() {
               </table>
             </div>
 
-            <table className="table table-dark table-hover  mt-0">
+            <table className="table  table-hover  mt-0 fw-bold">
               <thead>
-                <tr className="table-active d-none">
+                <tr className="table-active d-none" >
                   <th scope="col">Phân ngành - ICB 2</th>
                   <th scope="col">Cá nhân trong nước</th>
                   <th scope="col">Tổ chức trong nước</th>
@@ -402,32 +402,33 @@ function Data() {
                 <tr
                   onClick={allDataClear}
                   className={`cursor-pointer`}
+                  style={{ fontSize:"15px" }}
                 >
                   <td className="w-25">Tổng cộng</td>
                   <td
                     className={`${
-                      Cá_nhân_trong_nước >= 0 ? "text-success" : "text-danger"
+                      Cá_nhân_trong_nước >= 0 ? "green" : "red"
                     }`}
                   >
                     {Cá_nhân_trong_nước.toFixed(2)}
                   </td>
                   <td
                     className={`${
-                      Tổ_chức_trong_nước >= 0 ? "text-success" : "text-danger"
+                      Tổ_chức_trong_nước >= 0 ? "green" : "red"
                     }`}
                   >
                     {Tổ_chức_trong_nước.toFixed(2)}
                   </td>
                   <td
                     className={`${
-                      Tự_doanh >= 0 ? "text-success" : "text-danger"
+                      Tự_doanh >= 0 ? "green" : "red"
                     }`}
                   >
                     {Tự_doanh.toFixed(2)}
                   </td>
                   <td
                     className={`${
-                      Nước_ngoài >= 0 ? "text-success" : "text-danger"
+                      Nước_ngoài >= 0 ? "green" : "red"
                     }`}
                   >
                     {Nước_ngoài.toFixed(2)}
@@ -438,17 +439,17 @@ function Data() {
           </div>
 
           <div className="col-lg-6">
-            <h6 className="my-4 fw-bold text-white col-lg-12">
+            <h6 className="my-3 fw-bold text-white col-lg-12">
             Mua bán ròng theo mã
             </h6>
 
-            <div
+            {/* <div
               className="table_data overflow-y-auto"
               style={{ maxHeight: "200px" }}
             >
-              <table className="table table-dark mb-0">
+              <table className="table  mb-0 fw-bold ">
                 <thead>
-                  <tr className="table-active">
+                  <tr className="table-active" style={{ fontSize:"15px" }}>
                     <th scope="col">Mã</th>
                     <th scope="col">Cá nhân trong nước</th>
                     <th scope="col">Tổ chức trong nước</th>
@@ -469,14 +470,15 @@ function Data() {
                             data.id != selectTable2 && selectTable2 != -1
                               ? "table-secondary"
                               : ""
-                          } cursor-pointer`}
+                          } cursor-pointer `}
+                          style={{ fontSize:"15px" }}
                         >
                           <td>{data.Mã}</td>
                           <td
                             className={`${
                               data.Cá_nhân_trong_nước > 0
-                                ? "text-success"
-                                : "text-danger"
+                                ? "green"
+                                : "red"
                             }`}
                           >
                             {data.Cá_nhân_trong_nước}
@@ -484,15 +486,15 @@ function Data() {
                           <td
                             className={`${
                               data.Tổ_chức_trong_nước > 0
-                                ? "text-success"
-                                : "text-danger"
+                                ? "green"
+                                : "red"
                             }`}
                           >
                             {data.Tổ_chức_trong_nước}
                           </td>
                           <td
                             className={`${
-                              data.Tự_doanh > 0 ? "text-success" : "text-danger"
+                              data.Tự_doanh > 0 ? "green" : "red"
                             }`}
                           >
                             {data.Tự_doanh}
@@ -500,8 +502,8 @@ function Data() {
                           <td
                             className={`${
                               data.Nước_ngoài > 0
-                                ? "text-success"
-                                : "text-danger"
+                                ? "green"
+                                : "red"
                             }`}
                           >
                             {data.Nước_ngoài}
@@ -515,9 +517,9 @@ function Data() {
                 </tbody>
               </table>
             </div>
-            <table className="table table-dark ">
+            <table className="table fw-bold " >
               <thead className="d-none">
-                <tr className="table-active">
+                <tr className="table-active " style={{ fontSize:"15px" }}>
                   <th scope="col">Mã</th>
                   <th scope="col">Cá nhân trong nước</th>
                   <th scope="col">Tổ chức trong nước</th>
@@ -528,43 +530,44 @@ function Data() {
               <tbody>
                 <tr
                   onClick={allDataClear}
-                  className={`cursor-pointer`}
+                  className={`cursor-pointer `}
+                  style={{ fontSize:"15px" }}
                 >
                   <td className="text-start">Tổng cộng</td>
                   <td
                     className={`${
-                      Cá_nhân_trong_nước >= 0 ? "text-success" : "text-danger"
+                      Cá_nhân_trong_nước >= 0 ? "green" : "red"
                     }`}
                   >
                     {Cá_nhân_trong_nước.toFixed(2)}
                   </td>
                   <td
                     className={`${
-                      Tổ_chức_trong_nước >= 0 ? "text-success" : "text-danger"
+                      Tổ_chức_trong_nước >= 0 ? "green" : "red"
                     }`}
                   >
                     {Tổ_chức_trong_nước.toFixed(2)}
                   </td>
                   <td
                     className={`${
-                      Tự_doanh >= 0 ? "text-success" : "text-danger"
+                      Tự_doanh >= 0 ? "green" : "red"
                     }`}
                   >
                     {Tự_doanh.toFixed(2)}
                   </td>
                   <td
                     className={`${
-                      Nước_ngoài >= 0 ? "text-success" : "text-danger"
+                      Nước_ngoài >= 0 ? "green" : "red"
                     }`}
                   >
                     {Nước_ngoài.toFixed(2)}
                   </td>
                 </tr>
               </tbody>
-            </table>
+            </table> */}
 
-            <div className="images w-100 ">
-              <DataChart chart_Data={chart_data} />
+            <div className="images w-100  " >
+              <DataChart  chart_Data={chart_data} />
             </div>
           </div>
         </div>

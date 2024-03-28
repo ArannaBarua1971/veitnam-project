@@ -78,7 +78,7 @@ function AddLectureArticle() {
       <div>
         {/* title of daseboard */}
         <div className="d-flex flex-wrap justify-content-between align-items-center mt-3">
-          <ContentHeader className="text-dark">Add Lecture Title</ContentHeader>
+          <ContentHeader className="text-dark">Add Lecture Article</ContentHeader>
           <Button
             className="py-2 my-3 bg-dark"
             onClick={() => navigate("/admin/all-Lecture-Article")}
@@ -121,7 +121,7 @@ function AddLectureArticle() {
               <></>
             )}
           </div>
-          <div className="description col-md-12">
+          <div className="description w-100">
             <SummerNote value={description} setContent={setDescription} />
             <Button
               className="py-3 px-2"

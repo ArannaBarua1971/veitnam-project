@@ -56,7 +56,7 @@ function Sidbar({ show }) {
     {
       name: "Kiến Thức Đầu Tư",
       icon: "fa-solid fa-book",
-      path: "https://n18.vn/kien-thuc-dau-tu/",
+      path: "https://n18.vn/shop/",
       lock: !verifyMemberShipUser,
     },
     {
@@ -181,7 +181,7 @@ function Sidbar({ show }) {
           {!userInfo ? (
             <>
               <Button
-                className="border-0 LoginBtn mx-auto w-100"
+                className="border-0 LoginBtn mx-auto w-100 font-xl"
                 onClick={() => navigate("/login")}
               >
                 <svg
@@ -221,27 +221,30 @@ function Sidbar({ show }) {
               <div
                 className="mt-5 p-3 d-flex userInfoBtn  rounded border-0 align-items-center justify-content-between"
                 onClick={() => navigate("/user-information")}
-                style={{ cursor: "pointer" }}
+                style={{ cursor: "pointer"}}
               >
-                <div className="userImg rounded-circle  me-1">
-                  <i className="fa-regular fa-user m-3"></i>
-                  {/* <img
+                <div className="info d-flex">
+                  <div className="userImg rounded-circle  me-3">
+                    <i className="fa-regular fa-user m-3"></i>
+                    {/* <img
                     src={`https://api.dicebear.com/7.x/initials/svg?seed=${userInfo.name}`}
                     alt="avatar"
                     className="rounded-lg"
                     style={{ width: "2.5rem" }}
                   /> */}
-                </div>
-                <div className="data text-white  ms-1">
-                  <ContentHeader
-                    className="text-white p-0 m-0"
-                    style={{ fontSize: "16px" }}
-                  >
-                    {userInfo.name}
-                  </ContentHeader>
-                  <p className="p-0 m-0" style={{ fontSize: "10px" }}>
-                    {userInfo.email}
-                  </p>
+                  </div>
+                  <div className="data text-white  ms-1">
+                    <ContentHeader
+                      className="text-white p-0 m-0"
+                      
+                    >
+                     {userInfo && userInfo.name && userInfo.name.slice(0, 6)}
+                     {userInfo && userInfo.name && userInfo.name.length >6 ? " ...":""}
+                    </ContentHeader>
+                    <p className="p-0 m-0" style={{ fontSize: "10px" }}>
+                      {userInfo.email}
+                    </p>
+                  </div>
                 </div>
                 <div className="icon">
                   <i className="fas fa-chevron-right fa-fw text-white"></i>

@@ -154,9 +154,9 @@ function UserInfo() {
 
   return (
     <section className="userInformation main_background user_info overflow-y-scroll">
-      <div className="container">
-        <div className="row">
-          <div className="col-lg-1">
+      <div className="px-5">
+        <div className="d-flex">
+          <div className="">
             <div className="dice">
               <img
                 src={`https://api.dicebear.com/7.x/initials/svg?seed=${name}`}
@@ -176,7 +176,7 @@ function UserInfo() {
       {/* notify toast */}
       <ToastContainer />
 
-      <div className="container ">
+      <div className="px-5 ">
         <div
           className="about_cnt col-lg-12 col-sm-12"
           data-aos="fade-left"
@@ -184,9 +184,13 @@ function UserInfo() {
           data-aos-delay="300"
         >
           <nav>
-            <div className="nav nav-tabs mb-3" id="about_nav" role="tablist">
+            <div
+              className="nav nav-tabs mb-3 border-0"
+              id="about_nav"
+              role="tablist"
+            >
               <button
-                className="nav-link active active-btn"
+                className="nav-link active active-btn border-0"
                 id="nav-home-tab"
                 data-bs-toggle="tab"
                 data-bs-target="#company"
@@ -199,7 +203,7 @@ function UserInfo() {
               </button>
               {/* {!admin ? ( */}
               <button
-                className="nav-link"
+                className="nav-link border-0"
                 id="nav-home-tab"
                 data-bs-toggle="tab"
                 data-bs-target="#history"
@@ -215,7 +219,7 @@ function UserInfo() {
               )} */}
               {!loginWithThirdparty ? (
                 <button
-                  className="nav-link"
+                  className="nav-link border-0"
                   id="nav-home-tab"
                   data-bs-toggle="tab"
                   data-bs-target="#mission"
@@ -242,10 +246,10 @@ function UserInfo() {
               role="tabpanel"
               aria-labelledby="nav-home-tab"
             >
-              <div className="container">
-                <div className="col-sm-12">
+              <div>
+                <div className="col-xxl-8  col-sm-12">
                   {/* <!-- form work here --> */}
-                  <div className="col-sm-12 user-box">
+                  <div className=" col-sm-12 user-box">
                     <div className="row g-3 form-bg mt-1 mb-5 text-white">
                       <h4 className="text-light">This is a user Info form</h4>
                       <div className="col-md-12 col-sm-12 col-lg-6 ">
@@ -321,7 +325,7 @@ function UserInfo() {
                       </div>
                     </div>
                   </div>
-                  <div className="col-sm-12user-box d-block ">
+                  <div className="  col-sm-12 user-box d-block ">
                     <form className="row g-3 form-bg form-bg-2 room mt-1 mb-5 ">
                       <h3 className="pass-change-h3">KDĐT Room</h3>
 
@@ -501,7 +505,7 @@ function UserInfo() {
                 aria-labelledby="nav-home-tab"
               >
                 <div className="col-lg-6 col-sm-12 col-md-12 user-box ">
-                  <div className="row g-3 form-bg form-bg-2 mt-1 mb-5 w-50">
+                  <div className="row g-3 form-bg form-bg-2 m-0 mt-0 w-50">
                     <h3 className="pass-change-h3">Đổi mật khẩu</h3>
                     <div className="col-md-6 w-100">
                       <Input
@@ -537,13 +541,14 @@ function UserInfo() {
                     </div>
 
                     <div className="col-12">
-                      <button
+                      <Button
                         type="submit"
-                        className="w-100 form-btn-update form-btn-or btn btn-primary"
+                        className="btn w-100 py-3"
+                        textStyle="p-0 m-0"
                         onClick={update_password}
                       >
                         Update Password
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 </div>

@@ -33,16 +33,16 @@ function AllActiveCourses() {
             </ContentHeader>
           </div>
 
-          <div className="d-flex flex-wrap mt-2">
+          <div className="courses   d-flex flex-wrap mt-2 container justify-content-between">
             {courses.map((course, index) => (
-              <div key={index} className="col-lg-4 col-md-6 col-sm-12 my-2 ">
-                <div className="card" style={{ width: "18rem;" }}>
+              <div key={index} className="col-lg-4 col-md-5 col-sm-12 ">
+                <div className="text-white form-bg mx-2" style={{ width: "18rem;" }}>
                   <img
                     src={course.course_thumb_url}
                     className="card-img-top"
                     alt="..."
                   />
-                  <div className="card-body">
+                  <div className="card-body my-2">
                     <h5 className="card-title">{course.course_title}</h5>
                     <p className="card-text">
                       {course.course_description  ? (
@@ -58,7 +58,7 @@ function AllActiveCourses() {
                     </p>
                     <Button
                       onClick={() => course_details(course.slug)}
-                      className="btn-style"
+                      className="btn-style mt-3"
                     >
                       See More
                     </Button>

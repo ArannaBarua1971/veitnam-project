@@ -12,6 +12,7 @@ function Tổngquan() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loginUser, setLoginUser] = useState(false);
+  const [date,setDate]=useState("");
 
   const [unlockArticle, setUnlockArticle] = useState("");
   const [lockArticle, setLockArticle] = useState("");
@@ -53,6 +54,7 @@ function Tổngquan() {
     axios
       .get(`${conf}/getArticle/Tổng quan`)
       .then(function (response) {
+        setDate(response.data.data.updated_at);
         setUnlockArticle(response.data.data.article);
         setUnlockArticleShowLength(
           response.data.data.percentage
@@ -92,8 +94,8 @@ function Tổngquan() {
           aria-label="Close"
         ></button>
       </div> */}
-      <div className="main_content ">
-        <ContentHeader className="DealHeader">Tổng quan</ContentHeader>
+      <div className="main_content " >
+        <ContentHeader className="DealHeader" date={date}>Tổng quan</ContentHeader>
       </div>
       <div className="main_content col-sm-11 mx-auto text-white ">
         {loginUser ? (

@@ -7,7 +7,7 @@ function SummerNote({ value, setContent, className }) {
 
   return (
     <JoditEditor
-        ref={editor}
+      ref={editor}
       value={value}
       onChange={setContent}
       className={className}

@@ -74,7 +74,7 @@ function DataChart({chart_Data}) {
 
   return (
     <div>
-      <Chart type="bar" data={data} />
+      <Chart   type="bar" data={data} />
     </div>
   );
 }

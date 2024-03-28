@@ -4,7 +4,7 @@
 
 :root {
   --common_color: #ff8c00;
-  --secondary_color: #121936;
+  --secondary_color: #242A4A;
   --text_color1: #666;
   --text_color2: #0e1125;
   --text_color3: #0a0a0a;
@@ -66,6 +66,48 @@ a {
   font-size: 20px;
   font-weight: 400;
 }
+.headerDate {
+  font-size: 17px;
+  margin: 10px 0px 0px;
+  font-weight: 400;
+  color: #9d9ea1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  width: fit-content;
+}
+.headerDate i {
+  font-size: 23px;
+  margin-right: 10px;
+}
+.dataTable{
+  background: #1E2441 !important;
+}
+.dataTable .green{
+  color: #6AD243;
+}
+.dataTable .red{
+  color: #FF1A28;
+}
+.dataTable table td,
+.dataTable table th {
+  color: white;
+  border-bottom: 0.5px solid gray;
+}
+.dataTable table td:nth-child(1){
+  text-align: left;
+
+}
+.dataTable table td{
+  text-align: center;
+
+}
+.dataTable table td:hover{
+  background: #1B203A;
+  color: #E5E5E5;
+}
+
 /* Input section desgin css start */
 .InputLabel {
   width: 100%;
@@ -101,6 +143,10 @@ a {
   .add div {
     width: 100% !important;
   }
+}
+.course_description img {
+  width: 100%;
+  object-fit: contain;
 }
 /* Input section desgin css end */
 
@@ -143,9 +189,16 @@ a {
   background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(2px);
 }
-.popup_inner {
+.fullPopupPart{
   position: relative;
-  /* padding: 40px 30px !important; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+.popup_inner {
+  position: absolute;
   background: var(--secondary_color);
   border: 2px solid gray;
 
@@ -158,11 +211,29 @@ a {
   padding-bottom: 30px;
   word-wrap: break-word;
 }
-.popup_inner p {
+.popup_inner p,
+.popup_inner div ,
+.popup_inner span ,
+.popup_inner img
+{
+  width: 100% !important  ;
+}
+.popup_inner table{
   width: 100%;
+  overflow: scroll;
+}
+.close{
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  position: sticky;
+  right: 0;
+  top: 0;
+  z-index: 999999;
 }
 .popup_close_button {
-  display: block;
+  z-index: 999999;
+  cursor: pointer;
 }
 .cursor-pointer {
   cursor: pointer;
@@ -199,6 +270,7 @@ a {
   font-weight: 700;
   color: var(--text_color4);
   display: block;
+  margin-top: 75px;
 }
 /*  section header desgin css end */
 
@@ -292,6 +364,7 @@ a {
   color: #b6b6b6;
   margin-right: 10px;
   font-size: 14px;
+  font-weight: 900;
 }
 .sidbar #authrization .LogoutBtn:hover span {
   color: #fcfcfc !important;
@@ -299,11 +372,26 @@ a {
 .userInformation .accordion-item .accordion-button {
   color: white;
 }
+.userInfoBtn .info .data h3 {
+  font-size: 18px !important;
+}
 .userInformation .date span,
 .userInformation .expired button p {
   color: #9c9ea0;
 }
-
+.userInformation .about_cnt nav button.active {
+  color: var(--common_color) !important;
+  font-weight: 900;
+  border-bottom: 2px solid var(--common_color) !important ;
+}
+.userInformation .about_cnt nav button {
+  color: #9c9ea0;
+  font-weight: 900;
+}
+.userInformation .about_cnt nav button:hover {
+  color: var(--common_color);
+  font-weight: 900;
+}
 .userInformation .expired button {
   color: #9c9ea0;
   background: #4e5052;
@@ -383,6 +471,7 @@ a {
   .sidbar #authrization .LoginBtn p {
     width: 50%;
   }
+ 
 }
 @media (max-width: 1399.98px) and (min-width: 1200px) {
   .sidbar {
@@ -399,8 +488,14 @@ a {
     width: 70%;
     margin-left: 250px;
   }
+  .section_header {
+    margin-top: 51px;
+  }
 }
 @media (max-width: 1199.98px) and (min-width: 992px) {
+  .section_header {
+    margin-top: 30px;
+  }
   .sidbar {
     width: 20%;
   }
@@ -417,6 +512,7 @@ a {
     height: 80%;
     width: 70%;
     margin-left: 200px;
+
   }
 }
 @media (max-width: 991.98px) {
@@ -457,7 +553,6 @@ a {
     width: 100%;
     height: 80%;
     margin: 0px 30px;
-
   }
   .popup_inner button {
     margin-right: 90%;
@@ -633,7 +728,12 @@ a {
   .first-pera p {
     word-break: break-all;
   }
-  .main_content .first-pera img {
+  .main_content .first-pera {
+    color: white;
+  }
+  .main_content .first-pera img,
+  .main_content .first-pera span,
+  .main_content .first-pera div {
     width: 100% !important;
     height: auto !important;
   }
@@ -882,7 +982,7 @@ a {
   background: #242a4a;
   padding: 15px;
   margin-top: 15px !important;
-  border-radius: 20px;
+  border-radius: 5px;
 }
 
 .form-bg input {
@@ -936,7 +1036,6 @@ a {
 /* //password change work */
 #mission .form-bg {
   margin-left: 50px;
-  margin-top: 50px !important;
 
   display: flex;
   height: 100%;
@@ -1038,7 +1137,13 @@ a {
     width: 333px !important;
   }
 }
-@media (min-width: 768px) and (max-width: 991px) {
+@media (max-width: 991px) {
+  .main_content .first-pera img,
+  .main_content .first-pera span,
+  .main_content .first-pera div {
+    width: 100% !important;
+    height: auto !important;
+  }
 }
 @media (min-width: 992px) {
 }
@@ -1560,7 +1665,9 @@ a {
 }
 .tablepage1 .tableOfShortDeal {
   overflow-x: scroll;
+
 }
+
 .tablepage1 table thead {
   background-color: #d1bd75;
 }
@@ -1574,7 +1681,6 @@ a {
 .tablepage1 .article {
   margin: 20px 0px;
   color: white;
-  border: 1px solid black !important;
 }
 .tablepage1 .article .articleHeader {
   margin: 20px 0px;
@@ -1824,6 +1930,17 @@ a {
   font-size: 24px;
   margin-bottom: 30px;
 }
+.courses div .form-bg {
+  max-height: 25rem;
+  height: 25rem;
+}
+
+.images canvas {
+  box-sizing: border-box;
+  display: block;
+  max-height: 376px;
+  max-width: 100%;
+}
 
 #videos .card {
   margin: 0 40px;
@@ -1895,7 +2012,6 @@ a {
   #videos .card {
     margin: 0px 2px;
   }
-  
 
   .content-videos {
     margin-top: 0;
@@ -1908,17 +2024,21 @@ a {
     width: 100%;
   }
 }
-@media (max-width: 991.98px) and (min-width: 768px){
+@media (max-width: 991.98px) and (min-width: 768px) {
   #videos .card {
     margin: 0px 20px;
   }
 }
-@media (max-width: 767.98px) and (min-width: 576px){
+@media (max-width: 767.98px) and (min-width: 576px) {
   #videos .card {
     margin: 0px 50px !important;
   }
+
 }
 @media (max-width: 575.98px) {
+  .courses div {
+    width: 100%;
+  }
   #videos .card {
     margin: 2px;
   }

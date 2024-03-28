@@ -7,6 +7,7 @@ import Pagination from "../components/Pagination";
 function AllActiveLectureArticle() {
   const navigate = useNavigate();
   const [articles, setarticles] = useState([]);
+  const [articlesForSidbar, setarticlesForSidbar] = useState([]);
   const [currentPageNo, setCurrentPageNo] = useState(1);
   const [postPerPage, setPostPerPage] = useState(4);
   const [firstIndex, setFirstIndex] = useState();
@@ -26,6 +27,7 @@ function AllActiveLectureArticle() {
       .get(`${conf}/getAllActiveLectureArticle`)
       .then((response) => {
         setarticles(response.data.data);
+        setarticlesForSidbar(response.data.data.slice(3,response.data.data.length))
       })
       .catch((error) => console.log(error));
   };
@@ -48,7 +50,7 @@ function AllActiveLectureArticle() {
             </ContentHeader>
           </div>
 
-          <div className="d-flex flex-wrap mt-2">
+          <div className="courses d-flex flex-wrap mt-2 container">
             {articles.slice(0, 3).map((article, index) => (
               <div
                 key={index}
@@ -56,7 +58,7 @@ function AllActiveLectureArticle() {
                 onClick={() => article_details(article.slug)}
               >
                 <div
-                  className={`card `}
+                  className={`text-white form-bg mx-2 `}
                   style={{ width: "18rem;" }}
                 >
                   <img
@@ -64,9 +66,9 @@ function AllActiveLectureArticle() {
                     className="card-img-top"
                     alt="..."
                   />
-                  <div className="card-body">
+                  <div className="card-body mt-5">
                     <h5 className="card-title">{article.title}</h5>
-                    <p className="card-text">
+                    <p className="card-text my-2">
                       {article.description ? (
                         <div
                           dangerouslySetInnerHTML={{
@@ -83,7 +85,7 @@ function AllActiveLectureArticle() {
               </div>
             ))}
           </div>
-          <div className="videoSection ms-2">
+          <div className="videoSection  container ">
             <section className="hero--area section-padding-80 video-main-section-edit p-0 mt-5">
               <div className="row no-gutters ">
                 {/* back to history */}
@@ -93,12 +95,12 @@ function AllActiveLectureArticle() {
                     `}
                     role="tablist"
                   >
-                    {articles
+                    {articlesForSidbar
                       .slice(firstIndex, lastIndex)
                       .map((article, index) => (
                         <li
                           key={index}
-                          className="nav-item cursor-pointer w-100 border bg-white h-25"
+                          className="nav-item cursor-pointer w-100 text-white  h-25 form-bg py-2 px-0"
                           onClick={() => article_details(article.slug)}
                         >
                           <a
@@ -112,10 +114,10 @@ function AllActiveLectureArticle() {
                             {/* <!-- Single Blog Post --> */}
                             <div className="single-blog-post style-2 d-flex align-items-center">
                               <div className="post-thumbnail">
-                                <img src={article.thumb_url} alt="" />
+                                <img src={article.thumb_url} alt="" style={{ height:"90px",objectFit:"cover" }} />
                               </div>
                               <div className="post-content ">
-                                <h6 className="post-title text-dark">
+                                <h6 className="post-title ">
                                   {article.title}
                                 </h6>
                                 {article.description ? (
@@ -139,9 +141,9 @@ function AllActiveLectureArticle() {
                   </ul>
                 </div>
 
-                {articles.length > 4 ? (
+                {articlesForSidbar.length > 4 ? (
                   <Pagination
-                    totalPost={articles.length}
+                    totalPost={articlesForSidbar.length}
                     postPerPage={postPerPage}
                     currentPage={currentPageNo}
                     setCurrentPageNo={setCurrentPageNo}
