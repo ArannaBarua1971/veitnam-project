@@ -1137,16 +1137,14 @@ a {
     width: 333px !important;
   }
 }
-@media (max-width: 991px) {
-  .main_content .first-pera img,
-  .main_content .first-pera span,
-  .main_content .first-pera div {
+@media (min-width: 576px) {
+  .main_content .first-pera span ,
+  .main_content .first-pera img{
     width: 100% !important;
-    height: auto !important;
+    height: auto ;
   }
 }
-@media (min-width: 992px) {
-}
+
 
 /* Accordion container styling */
 .active {
